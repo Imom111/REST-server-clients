@@ -15,12 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+const customers_1 = __importDefault(require("../routes/customers"));
 class Server {
     constructor() {
+        this.apiPaths = {
+            usuarios: '/api/customers'
+        };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8081';
         this.dbConnection();
         this.middlewares();
+        this.routes();
     }
     ;
     dbConnection() {
@@ -42,6 +47,9 @@ class Server {
         this.app.use(express_1.default.json());
         // carpeta publica
         this.app.use(express_1.default.static('public'));
+    }
+    routes() {
+        this.app.use(this.apiPaths.usuarios, customers_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {
