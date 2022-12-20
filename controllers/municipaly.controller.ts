@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {Op} from "sequelize";
+import { Op } from "sequelize";
 
 import Municipality from "../models/Municipality.model";
 import State from "../models/State.model";

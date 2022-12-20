@@ -16,10 +16,12 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 const municipalities_1 = __importDefault(require("../routes/municipalities"));
+const states_1 = __importDefault(require("../routes/states"));
 class Server {
     constructor() {
         this.apiPaths = {
-            municipalities: '/api/municipios'
+            municipalities: '/api/municipios',
+            states: '/api/estados'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8081';
@@ -50,6 +52,7 @@ class Server {
     }
     routes() {
         this.app.use(this.apiPaths.municipalities, municipalities_1.default);
+        this.app.use(this.apiPaths.states, states_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

@@ -2,13 +2,15 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import db from '../db/connection';
 
-import userRoutes from '../routes/municipalities';
+import municipalityRoutes from '../routes/municipalities';
+import stateRoutes from '../routes/states';
 
 class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        municipalities: '/api/municipios'
+        municipalities: '/api/municipios',
+        states: '/api/estados'
     }
 
     constructor(){
@@ -44,7 +46,8 @@ class Server {
     }
 
     routes(){
-        this.app.use( this.apiPaths.municipalities, userRoutes );
+        this.app.use( this.apiPaths.municipalities, municipalityRoutes );
+        this.app.use( this.apiPaths.states, stateRoutes );
     }
 
     listen(){
