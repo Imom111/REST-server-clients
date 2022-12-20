@@ -19,7 +19,7 @@ const municipalities_1 = __importDefault(require("../routes/municipalities"));
 class Server {
     constructor() {
         this.apiPaths = {
-            usuarios: '/api/customers'
+            municipalities: '/api/municipios'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8081';
@@ -49,7 +49,7 @@ class Server {
         this.app.use(express_1.default.static('public'));
     }
     routes() {
-        this.app.use(this.apiPaths.usuarios, municipalities_1.default);
+        this.app.use(this.apiPaths.municipalities, municipalities_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

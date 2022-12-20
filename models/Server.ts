@@ -8,7 +8,7 @@ class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        usuarios: '/api/customers'
+        municipalities: '/api/municipios'
     }
 
     constructor(){
@@ -44,7 +44,7 @@ class Server {
     }
 
     routes(){
-        this.app.use( this.apiPaths.usuarios, userRoutes );
+        this.app.use( this.apiPaths.municipalities, userRoutes );
     }
 
     listen(){
