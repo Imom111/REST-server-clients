@@ -4,7 +4,7 @@ require('dotenv').config();
 
 /* This is creating a new instance of Sequelize. */
 const db = new Sequelize(
-	'mysql://uf7ohogomfidsmbi:gPq0q1o0GMdql0SnLNT8@bsiyueg9lxxg8julclbi-mysql.services.clever-cloud.com:3306/bsiyueg9lxxg8julclbi'
+	String(process.env.DB_URI)
 );
 
 export default db;
