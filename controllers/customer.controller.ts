@@ -90,7 +90,7 @@ export const searchCustomersByAttribute = async( req: Request ,res: Response) =>
             });
         } else {
             res.status(404).json({
-                msg: `The customer ${ attribute }: ${ query } does not exist in the database.`
+                msg: `The customer with ${ attribute } equal to ${ query } does not exist in the database.`
             });
         }
     } catch (error) {
@@ -101,26 +101,17 @@ export const searchCustomersByAttribute = async( req: Request ,res: Response) =>
     }
 }
 
+
 /**
- * It receives a request and a response object, then it tries to save the customer, if it fails, it
- * returns a 500 status code with a message, if it succeeds, it returns a 200 status code with a
- * message
+ * It takes a request and a response object, and then it tries to save a customer to the database
  * @param {Request} req - Request - This is the request object that contains the data sent from the
  * client.
- * @param {Response} res - Response - This is the response object that will be sent back to the client.
- * @returns A function that takes in a request and response object.
+ * @param {Response} res - Response - This is the response object that we will use to send a response
+ * back to the client.
  */
 export const postCustomer = async( req: Request, res: Response) => {
     try {
         const { body } = req;
-        const exists = await Customer.findOne({
-            where: { full_name: body.full_name }
-        });
-        if ( exists ) {
-            return res.status(400).json({
-                msg: 'This customer already exists'
-            });
-        }
         const customer = Customer.build( body );
         await customer.save();
         res.json({
@@ -184,12 +175,10 @@ export const deleteCustomer = async( req: Request, res: Response) => {
                 msg: `The customer with id ${ id } does not exist in the database.`
             });
         }
-        
         await customer.update({ status: false });
         res.json({
             msg: 'The status customer has changed to inactive'
         });
-
     } catch (error) {
         console.log(error);
         res.status(500).json({

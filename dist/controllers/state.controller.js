@@ -14,7 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteState = exports.putState = exports.postState = exports.searchStatesByAttribute = exports.getState = exports.getStates = void 0;
 const sequelize_1 = require("sequelize");
+// Imports from other this project packages
 const State_model_1 = __importDefault(require("../models/State.model"));
+/**
+ * It's a function that receives a request and a response, and it returns a json with all the states
+ * @param {Request} req - Request - This is the request object that contains all the information about
+ * the request.
+ * @param {Response} res - Response - This is the response object that will be sent back to the client.
+ */
 const getStates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const states = yield State_model_1.default.findAll();
@@ -30,6 +37,11 @@ const getStates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getStates = getStates;
+/**
+ * It gets a state from the database and returns it as a JSON object
+ * @param {Request} req - Request - This is the request object that contains the request information.
+ * @param {Response} res - Response: This is the response object that will be sent back to the client.
+ */
 const getState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -53,6 +65,11 @@ const getState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getState = getState;
+/**
+ * It searches for a state by a given attribute and returns the state if it exists
+ * @param {Request} req - Request - This is the request object that contains the request information.
+ * @param {Response} res - Response - The response object that will be sent back to the client.
+ */
 const searchStatesByAttribute = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { attribute } = req.params;
@@ -81,17 +98,16 @@ const searchStatesByAttribute = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.searchStatesByAttribute = searchStatesByAttribute;
+/**
+ * It receives a request and a response object, and it tries to save a new state in the database
+ * @param {Request} req - Request - This is the request object that contains the data sent from the
+ * client.
+ * @param {Response} res - Response - This is the response object that will be sent back to the client.
+ * @returns A function that takes in a request and response object.
+ */
 const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body } = req;
-        const exists = yield State_model_1.default.findOne({
-            where: { name: body.name }
-        });
-        if (exists) {
-            return res.status(400).json({
-                msg: 'This state already exists'
-            });
-        }
         const state = State_model_1.default.build(body);
         yield state.save();
         res.json({
@@ -106,6 +122,12 @@ const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.postState = postState;
+/**
+ * It updates a state in the database
+ * @param {Request} req - Request - This is the request object that contains the request information.
+ * @param {Response} res - Response - This is the response object that will be sent back to the client.
+ * @returns The state with the id that was passed in the request params.
+ */
 const putState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;
@@ -129,6 +151,14 @@ const putState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.putState = putState;
+/**
+ * It finds a state by its id, if it exists, it changes its status to false, if it doesn't exist, it
+ * returns a 404 error
+ * @param {Request} req - Request - This is the request object that contains the data sent from the
+ * client.
+ * @param {Response} res - Response: This is the response object that will be sent back to the client.
+ * @returns The state with the id that was passed in the params.
+ */
 const deleteState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

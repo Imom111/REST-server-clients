@@ -13,17 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchCoordinates = void 0;
-// Imports from other packages
+// Imports from other node packages
 const axios_1 = __importDefault(require("axios"));
+/**
+ * It receives a request with a query string, it encodes the query string and sends it to the Mapbox
+ * API, then it returns the coordinates of the address
+ * @param {Request} req - Request - This is the request object that contains all the information about
+ * the request.
+ * @param {Response} res - The response object.
+ */
 const searchCoordinates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = req.query;
+        // The number of house improves accuracy
         // const number_house = query.numero;
         const street = query.calle;
         const housing = query.colonia;
         const postcode = query.CP;
         const city = query.municipio;
         const state = query.estado;
+        // The following order is recommended for MapBox searches
         const lugar = encodeURIComponent(`${street} ${housing} ${postcode} ${city} ${state}`);
         const intance = axios_1.default.create({
             baseURL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lugar}.json`,
@@ -38,7 +47,13 @@ const searchCoordinates = (req, res) => __awaiter(void 0, void 0, void 0, functi
             }
         });
         const { data } = yield intance.get('');
+        // The first result option is always used
         const result = data.features[0];
+        if (!result) {
+            return res.status(404).json({
+                msg: 'Coordinates did not found'
+            });
+        }
         res.json({
             lng: result.center[0],
             lat: result.center[1]
