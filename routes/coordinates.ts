@@ -1,5 +1,6 @@
 // Imports from other node packages
 import { Router } from 'express';
+import { check } from "express-validator";
 
 // Imports from other this project packages
 import {

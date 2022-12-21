@@ -34,25 +34,18 @@ export const getMunicipalities = async( req: Request ,res: Response) => {
 export const getMunicipalitiesByState = async( req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const state = await State.findByPk( id );
-        if ( state ) {
-            const municipalities = await Municipality.findAll({
-                where: {
-                    idState_Municipality: id
-                }
-            });
-            if ( municipalities ) {
-                res.json({
-                    municipalities
-                });
-            } else {
-                res.status(404).json({
-                    msg: `The state with id ${ id } doesn't have associated municipalities.`
-                });
+        const municipalities = await Municipality.findAll({
+            where: {
+                idState_Municipality: id
             }
+        });
+        if ( municipalities ) {
+            res.json({
+                municipalities
+            });
         } else {
             res.status(404).json({
-                msg: `The state with id ${ id } does not exist in the database.`
+                msg: `The state with id ${ id } doesn't have associated municipalities.`
             });
         }
     } catch (error) {
@@ -132,19 +125,6 @@ export const searchMunicipalitiesByAttribute = async( req: Request ,res: Respons
 export const postMunicipality = async( req: Request, res: Response) => {
     try {
         const { body } = req;
-        const exists = await Municipality.findOne({
-            where: {
-                [Op.and]: [
-                    { name: body.name },
-                    { idState_Municipality: body.idState_Municipality }
-                ]
-            }
-        });
-        if ( exists ) {
-            return res.status(400).json({
-                msg: 'This municipality already exists'
-            });
-        }
         const municipality = Municipality.build( body );
         await municipality.save();
         res.json({

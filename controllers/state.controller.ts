@@ -93,14 +93,6 @@ export const searchStatesByAttribute = async (req: Request, res: Response) => {
 export const postState = async( req: Request, res: Response) => {
     try {
         const { body } = req;
-        const exists = await State.findOne({
-            where: { name: body.name }
-        });
-        if ( exists ) {
-            return res.status(400).json({
-                msg: 'This state already exists'
-            });
-        }
         const state = State.build( body );
         await state.save();
         res.json({

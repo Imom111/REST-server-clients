@@ -1,5 +1,6 @@
 // Imports from other node packages
 import { Router } from 'express';
+import { check } from 'express-validator';
 
 // Imports from other this project packages
 import {
@@ -12,21 +13,57 @@ import {
     searchMunicipalitiesByAttribute
 } from '../controllers/municipaly.controller';
 
+import  {
+    existsMunicipalityById,
+    existsStateById,
+    existsMuncipalityByName,
+    queryAttributeValidatorMunicipality
+} from "../helpers/db-validators";
+
+import  {
+    validateAll
+} from "../middlewares/validateAll";
+
 /* Creating a router object and then adding routes to it. */
 const router = Router();
 
 router.get('/', getMunicipalities);
 
-router.get('/:id', getMunicipality);
+router.get('/:id', [
+    check('id', 'The id should be numeric').isNumeric(),
+    check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),
+    validateAll
+], getMunicipality);
 
-router.get('/byEstado/:id', getMunicipalitiesByState);
+router.get('/byEstado/:id', [
+    check('id', 'The id should be numeric').isNumeric(),
+    check('id', 'The id state does not exists in the database').custom( existsStateById ),
+    validateAll
+], getMunicipalitiesByState);
 
-router.get('/search/:attribute', searchMunicipalitiesByAttribute);
+router.get('/search/:attribute', [
+    check('attribute', 'The attribute does not exists in municipalities').custom( queryAttributeValidatorMunicipality ),
+    validateAll
+], searchMunicipalitiesByAttribute);
 
-router.post('/', postMunicipality);
+router.post('/', [
+    check('name', 'This name is already registered').custom( existsMuncipalityByName ),
+    check('idState_Municipality', 'The id state does not exists in the database').custom( existsStateById ),
+    validateAll
+], postMunicipality);
 
-router.put('/:id', putMunicipality);
+router.put('/:id', [
+    check('id', 'The id should be numeric').isNumeric(),
+    check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),
+    check('name', 'This name is already registered').custom( existsMuncipalityByName ),
+    check('idState_Municipality', 'The id state does not exists in the database').custom( existsStateById ),
+    validateAll
+], putMunicipality);
 
-router.delete('/:id', deleteMunicipality);
+router.delete('/:id', [
+    check('id', 'The id should be numeric').isNumeric(),
+    check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),
+    validateAll
+], deleteMunicipality);
 
 export default router;

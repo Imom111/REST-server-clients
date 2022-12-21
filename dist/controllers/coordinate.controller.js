@@ -49,6 +49,11 @@ const searchCoordinates = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const { data } = yield intance.get('');
         // The first result option is always used
         const result = data.features[0];
+        if (!result) {
+            return res.status(404).json({
+                msg: 'Coordinates did not found'
+            });
+        }
         res.json({
             lng: result.center[0],
             lat: result.center[1]

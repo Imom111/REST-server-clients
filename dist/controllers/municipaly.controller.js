@@ -16,7 +16,6 @@ exports.deleteMunicipality = exports.putMunicipality = exports.postMunicipality 
 const sequelize_1 = require("sequelize");
 // Imports from other this project packages
 const Municipality_model_1 = __importDefault(require("../models/Municipality.model"));
-const State_model_1 = __importDefault(require("../models/State.model"));
 /**
  * It gets all the municipalities from the database and returns them in a JSON response
  * @param {Request} req - Request - This is the request object that contains all the information about
@@ -46,27 +45,19 @@ exports.getMunicipalities = getMunicipalities;
 const getMunicipalitiesByState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const state = yield State_model_1.default.findByPk(id);
-        if (state) {
-            const municipalities = yield Municipality_model_1.default.findAll({
-                where: {
-                    idState_Municipality: id
-                }
+        const municipalities = yield Municipality_model_1.default.findAll({
+            where: {
+                idState_Municipality: id
+            }
+        });
+        if (municipalities) {
+            res.json({
+                municipalities
             });
-            if (municipalities) {
-                res.json({
-                    municipalities
-                });
-            }
-            else {
-                res.status(404).json({
-                    msg: `The state with id ${id} doesn't have associated municipalities.`
-                });
-            }
         }
         else {
             res.status(404).json({
-                msg: `The state with id ${id} does not exist in the database.`
+                msg: `The state with id ${id} doesn't have associated municipalities.`
             });
         }
     }
@@ -150,19 +141,6 @@ exports.searchMunicipalitiesByAttribute = searchMunicipalitiesByAttribute;
 const postMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body } = req;
-        const exists = yield Municipality_model_1.default.findOne({
-            where: {
-                [sequelize_1.Op.and]: [
-                    { name: body.name },
-                    { idState_Municipality: body.idState_Municipality }
-                ]
-            }
-        });
-        if (exists) {
-            return res.status(400).json({
-                msg: 'This municipality already exists'
-            });
-        }
         const municipality = Municipality_model_1.default.build(body);
         yield municipality.save();
         res.json({
