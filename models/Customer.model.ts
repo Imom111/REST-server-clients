@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import db from '../db/connection';
 import Municipality from './Municipality.model';
 
+
 const Customer = db.define( 'Customer',
 {
 	idCustomer: {

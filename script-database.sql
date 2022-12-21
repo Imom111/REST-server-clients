@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
-SELECT `idMunicipality`, `name`, `status`, `idStates_Municipalities` FROM `municipality` AS `Municipality`;
+
 CREATE TABLE state(
 	idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -28,6 +28,25 @@ CREATE TABLE customer(
     idMunicipality_Customer INT NOT NULL,
     FOREIGN KEY (idMunicipality_Customer) REFERENCES municipality(idMunicipality)
 );
+
+
+DELIMITER //
+CREATE PROCEDURE searchCustomer( IN param VARCHAR(255) )
+BEGIN
+	SELECT * FROM customer WHERE
+	idCustomer LIKE CONCAT( '%', param,'%') OR
+	full_name LIKE CONCAT( '%', param,'%') OR
+	phone LIKE CONCAT( '%', param,'%') OR
+	email LIKE CONCAT( '%', param,'%') OR
+	housing LIKE CONCAT( '%', param,'%') OR
+	street LIKE CONCAT( '%', param,'%') OR
+	postal_code LIKE CONCAT( '%', param,'%') OR
+	status LIKE CONCAT( '%', param,'%') OR
+	idMunicipality_Customer LIKE CONCAT( '%', param,'%');
+END
+// DELIMITER ;
+
+SELECT * FROM customer;
 
 INSERT INTO state (name) VALUES ('AGUASCALIENTES');
 INSERT INTO municipality (name, idstate_municipality) VALUES ('AGUASCALIENTES',1);

@@ -4,13 +4,15 @@ import db from '../db/connection';
 
 import municipalityRoutes from '../routes/municipalities';
 import stateRoutes from '../routes/states';
+import customerRoutes from '../routes/customers';
 
 class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
         municipalities: '/api/municipios',
-        states: '/api/estados'
+        states: '/api/estados',
+        customers: '/api/clientes'
     }
 
     constructor(){
@@ -48,6 +50,7 @@ class Server {
     routes(){
         this.app.use( this.apiPaths.municipalities, municipalityRoutes );
         this.app.use( this.apiPaths.states, stateRoutes );
+        this.app.use( this.apiPaths.customers, customerRoutes );
     }
 
     listen(){

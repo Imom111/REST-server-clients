@@ -12,33 +12,78 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteState = exports.putState = exports.postState = exports.getState = exports.getStates = void 0;
+exports.deleteState = exports.putState = exports.postState = exports.searchStatesByAttribute = exports.getState = exports.getStates = void 0;
+const sequelize_1 = require("sequelize");
 const State_model_1 = __importDefault(require("../models/State.model"));
 const getStates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const states = yield State_model_1.default.findAll();
-    res.json({
-        states
-    });
+    try {
+        const states = yield State_model_1.default.findAll();
+        res.json({
+            states
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the states"
+        });
+    }
 });
 exports.getStates = getStates;
 const getState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const state = yield State_model_1.default.findByPk(id);
-    if (state) {
-        res.json({
-            state
-        });
+    try {
+        const { id } = req.params;
+        const state = yield State_model_1.default.findByPk(id);
+        if (state) {
+            res.json({
+                state
+            });
+        }
+        else {
+            res.status(404).json({
+                msg: `The state with id ${id} does not exist in the database.`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `The state with id ${id} does not exist in the database.`
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the state"
         });
     }
 });
 exports.getState = getState;
-const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = req;
+const searchStatesByAttribute = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { attribute } = req.params;
+        const { query } = req.query;
+        const search_value = { [sequelize_1.Op.like]: `%${query}%` };
+        const q = Object.fromEntries([[attribute, search_value]]);
+        const state = yield State_model_1.default.findAll({
+            where: q
+        });
+        if (state) {
+            res.json({
+                state
+            });
+        }
+        else {
+            res.status(404).json({
+                msg: `The state ${attribute}: ${query} does not exist in the database.`
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the state"
+        });
+    }
+});
+exports.searchStatesByAttribute = searchStatesByAttribute;
+const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { body } = req;
         const exists = yield State_model_1.default.findOne({
             where: { name: body.name }
         });
@@ -50,13 +95,13 @@ const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const state = State_model_1.default.build(body);
         yield state.save();
         res.json({
-            state
+            msg: 'State saved successfully'
         });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: "Failed to save state"
         });
     }
 });
@@ -73,20 +118,20 @@ const putState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         yield state.update(body);
         res.json({
-            state
+            msg: 'State updated successfully'
         });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: "Could not update state"
         });
     }
 });
 exports.putState = putState;
 const deleteState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
     try {
+        const { id } = req.params;
         const state = yield State_model_1.default.findByPk(id);
         if (!state) {
             return res.status(404).json({
@@ -101,7 +146,7 @@ const deleteState = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: 'Could not delete state'
         });
     }
 });

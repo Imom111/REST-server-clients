@@ -5,54 +5,102 @@ import Municipality from "../models/Municipality.model";
 import State from "../models/State.model";
 
 export const getMunicipalities = async( req: Request ,res: Response) => {
-    const municipalities = await Municipality.findAll();
-    res.json({
-        municipalities
-    });
+    try {
+        const municipalities = await Municipality.findAll();
+        res.json({
+            municipalities
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the municipalities"
+        });
+    }
 }
 
 export const getMunicipalitiesByState = async( req: Request, res: Response) => {
-    const { id } = req.params;
-    const state = await State.findByPk( id );
-    if ( state ) {
-        const municipalities = await Municipality.findAll({
-            where: {
-                idState_Municipality: id
-            }
-        });
-        if ( municipalities ) {
-            res.json({
-                municipalities
+    try {
+        const { id } = req.params;
+        const state = await State.findByPk( id );
+        if ( state ) {
+            const municipalities = await Municipality.findAll({
+                where: {
+                    idState_Municipality: id
+                }
             });
+            if ( municipalities ) {
+                res.json({
+                    municipalities
+                });
+            } else {
+                res.status(404).json({
+                    msg: `The state with id ${ id } doesn't have associated municipalities.`
+                });
+            }
         } else {
             res.status(404).json({
-                msg: `The state with id ${ id } doesn't have associated municipalities.`
+                msg: `The state with id ${ id } does not exist in the database.`
             });
         }
-    } else {
-        res.status(404).json({
-            msg: `The state with id ${ id } does not exist in the database.`
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the municipalities"
         });
     }
 }
 
 export const getMunicipality = async( req: Request, res: Response) => {
-    const { id } = req.params;
-    const municipality = await Municipality.findByPk( id );
-    if ( municipality ) {
-        res.json({
-            municipality
+    try {
+        const { id } = req.params;
+        const municipality = await Municipality.findByPk( id );
+        if ( municipality ) {
+            res.json({
+                municipality
+            });
+        } else {
+            res.status(404).json({
+                msg: `The municipality with id ${ id } does not exist in the database.`
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the municipality"
         });
-    } else {
-        res.status(404).json({
-            msg: `The municipality with id ${ id } does not exist in the database.`
+    }
+}
+
+export const searchMunicipalitiesByAttribute = async( req: Request ,res: Response) => {
+    try {
+        const { attribute } = req.params;
+        const { query } = req.query;
+        const search_value = {[Op.like]: `%${query}%`};
+        const q = Object.fromEntries( [[attribute, search_value]] );
+        
+        const municipality = await Municipality.findAll({
+            where: q
+        });
+        if ( municipality ) {
+            res.json({
+                municipality
+            });
+        } else {
+            res.status(404).json({
+                msg: `The municipality ${ attribute }: ${ query } does not exist in the database.`
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "It wasn't possible to get the municipality"
         });
     }
 }
 
 export const postMunicipality = async( req: Request, res: Response) => {
-    const { body } = req;
     try {
+        const { body } = req;
         const exists = await Municipality.findOne({
             where: {
                 [Op.and]: [
@@ -69,20 +117,20 @@ export const postMunicipality = async( req: Request, res: Response) => {
         const municipality = Municipality.build( body );
         await municipality.save();
         res.json({
-            municipality
+            msg: 'Muncipality saved successfully'
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: "Failed to save municipality"
         });
     }
 }
 
 export const putMunicipality = async( req: Request, res: Response) => {
-    const { id } = req.params;
-    const { body } = req;
     try {
+        const { id } = req.params;
+        const { body } = req;
         const municipality = await Municipality.findByPk( id );
         if ( !municipality ) {
             return res.status(404).json({
@@ -92,19 +140,19 @@ export const putMunicipality = async( req: Request, res: Response) => {
 
         await municipality.update( body );
         res.json({
-            municipality
+            msg: 'Municipality updated successfully'
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: "Could not update municipality"
         });
     }
 }
 
 export const deleteMunicipality = async( req: Request, res: Response) => {
-    const { id } = req.params;
     try {
+        const { id } = req.params;
         const municipality = await Municipality.findByPk( id );
         if ( !municipality ) {
             return res.status(404).json({
@@ -120,7 +168,7 @@ export const deleteMunicipality = async( req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Server error call to administrator'
+            msg: 'Could not delete municipality'
         });
     }
 

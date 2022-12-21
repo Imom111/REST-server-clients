@@ -4,7 +4,8 @@ import {
     getStates,
     postState,
     putState,
-    deleteState
+    deleteState,
+    searchStatesByAttribute
 } from '../controllers/state.controller';
 
 const router = Router();
@@ -12,6 +13,8 @@ const router = Router();
 router.get('/', getStates);
 
 router.get('/:id', getState);
+
+router.get('/search/:attribute', searchStatesByAttribute);
 
 router.post('/', postState);
 

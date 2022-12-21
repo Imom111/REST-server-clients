@@ -5,7 +5,8 @@ import {
     postMunicipality,
     putMunicipality,
     deleteMunicipality,
-    getMunicipalitiesByState
+    getMunicipalitiesByState,
+    searchMunicipalitiesByAttribute
 } from '../controllers/municipaly.controller';
 
 const router = Router();
@@ -15,6 +16,8 @@ router.get('/', getMunicipalities);
 router.get('/:id', getMunicipality);
 
 router.get('/byEstado/:id', getMunicipalitiesByState);
+
+router.get('/search/:attribute', searchMunicipalitiesByAttribute);
 
 router.post('/', postMunicipality);
 
