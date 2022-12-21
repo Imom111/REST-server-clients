@@ -5,6 +5,7 @@ import db from '../db/connection';
 import municipalityRoutes from '../routes/municipalities';
 import stateRoutes from '../routes/states';
 import customerRoutes from '../routes/customers';
+import coordinateRoutes from '../routes/coordinates';
 
 class Server {
     private app: Application;
@@ -12,7 +13,8 @@ class Server {
     private apiPaths = {
         municipalities: '/api/municipios',
         states: '/api/estados',
-        customers: '/api/clientes'
+        customers: '/api/clientes',
+        coordinates: '/api/coordenadas'
     }
 
     constructor(){
@@ -51,6 +53,7 @@ class Server {
         this.app.use( this.apiPaths.municipalities, municipalityRoutes );
         this.app.use( this.apiPaths.states, stateRoutes );
         this.app.use( this.apiPaths.customers, customerRoutes );
+        this.app.use( this.apiPaths.coordinates, coordinateRoutes );
     }
 
     listen(){

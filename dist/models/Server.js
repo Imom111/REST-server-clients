@@ -18,12 +18,14 @@ const connection_1 = __importDefault(require("../db/connection"));
 const municipalities_1 = __importDefault(require("../routes/municipalities"));
 const states_1 = __importDefault(require("../routes/states"));
 const customers_1 = __importDefault(require("../routes/customers"));
+const coordinates_1 = __importDefault(require("../routes/coordinates"));
 class Server {
     constructor() {
         this.apiPaths = {
             municipalities: '/api/municipios',
             states: '/api/estados',
-            customers: '/api/clientes'
+            customers: '/api/clientes',
+            coordinates: '/api/coordenadas'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8081';
@@ -56,6 +58,7 @@ class Server {
         this.app.use(this.apiPaths.municipalities, municipalities_1.default);
         this.app.use(this.apiPaths.states, states_1.default);
         this.app.use(this.apiPaths.customers, customers_1.default);
+        this.app.use(this.apiPaths.coordinates, coordinates_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {
