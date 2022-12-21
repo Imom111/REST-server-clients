@@ -21,8 +21,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./dist/app.js",
-    "ts": "tsc --watch"
+    "start": "node ./dist/app.js"
   },
   "repository": {
     "type": "git",
