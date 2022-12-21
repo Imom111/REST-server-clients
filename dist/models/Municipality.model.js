@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* Importing the DataTypes from sequelize, the db connection and the State model. */
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const State_model_1 = __importDefault(require("./State.model"));
+/* Creating a new table in the database. */
 const Municipality = connection_1.default.define('Municipality', {
     idMunicipality: {
         type: sequelize_1.DataTypes.INTEGER,
