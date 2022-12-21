@@ -12,14 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Imports from other node packages
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+// Imports from other this project packages
 const municipalities_1 = __importDefault(require("../routes/municipalities"));
 const states_1 = __importDefault(require("../routes/states"));
 const customers_1 = __importDefault(require("../routes/customers"));
 const coordinates_1 = __importDefault(require("../routes/coordinates"));
+/* It's a class that creates an Express server, connects to a MySQL database, and sets up the routes
+for the API */
 class Server {
+    /* It's declaring the properties of the class. */
     constructor() {
         this.apiPaths = {
             municipalities: '/api/municipios',
@@ -34,6 +39,10 @@ class Server {
         this.routes();
     }
     ;
+    /**
+     * The function `dbConnection()` is an asynchronous function that uses the `await` keyword to wait
+     * for the `db.authenticate()` function to complete before moving on to the next line of code
+     */
     dbConnection() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -46,6 +55,11 @@ class Server {
             }
         });
     }
+    /**
+     * We're using the `cors` middleware to allow cross-origin requests, the `express.json()`
+     * middleware to parse the body of the requests, and the `express.static()` middleware to serve the
+     * files in the `public` folder
+     */
     middlewares() {
         // cors
         this.app.use((0, cors_1.default)());
@@ -54,12 +68,20 @@ class Server {
         // carpeta publica
         this.app.use(express_1.default.static('public'));
     }
+    /**
+     * This function is used to define the routes for the application.
+     */
     routes() {
         this.app.use(this.apiPaths.municipalities, municipalities_1.default);
         this.app.use(this.apiPaths.states, states_1.default);
         this.app.use(this.apiPaths.customers, customers_1.default);
         this.app.use(this.apiPaths.coordinates, coordinates_1.default);
     }
+    /**
+     * The listen() function is a method of the app object that is created by the express() function.
+     * The listen() function takes two arguments: the port number and a callback function. The callback
+     * function is executed when the server is ready to receive requests
+     */
     listen() {
         this.app.listen(this.port, () => {
             console.log(`Server working on port ${this.port}`);
