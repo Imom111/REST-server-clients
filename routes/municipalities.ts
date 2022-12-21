@@ -1,4 +1,7 @@
+// Imports from other node packages
 import { Router } from 'express';
+
+// Imports from other this project packages
 import {
     getMunicipality,
     getMunicipalities,
@@ -9,6 +12,7 @@ import {
     searchMunicipalitiesByAttribute
 } from '../controllers/municipaly.controller';
 
+/* Creating a router object and then adding routes to it. */
 const router = Router();
 
 router.get('/', getMunicipalities);

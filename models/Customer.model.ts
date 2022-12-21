@@ -1,8 +1,11 @@
+/* Importing the DataTypes from the sequelize package, the db connection from the db/connection file,
+and the Municipality model from the Municipality.model file. */
 import { DataTypes } from 'sequelize';
 import db from '../db/connection';
 import Municipality from './Municipality.model';
 
 
+/* Creating a table in the database with the name of the model. */
 const Customer = db.define( 'Customer',
 {
 	idCustomer: {

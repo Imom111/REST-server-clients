@@ -1,4 +1,7 @@
+// Imports from other node packages
 import { Router } from 'express';
+
+// Imports from other this project packages
 import {
     getCustomer,
     getCustomers,
@@ -9,6 +12,7 @@ import {
     searchCustomersByAttribute
 } from '../controllers/customer.controller';
 
+/* Creating a router object and then adding routes to it. */
 const router = Router();
 
 router.post('/', postCustomer);

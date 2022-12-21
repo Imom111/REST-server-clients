@@ -1,4 +1,7 @@
+// Imports from other node packages
 import { Router } from 'express';
+
+// Imports from other this project packages
 import {
     getState,
     getStates,
@@ -8,6 +11,7 @@ import {
     searchStatesByAttribute
 } from '../controllers/state.controller';
 
+/* This is the router for the state.controller.ts file. */
 const router = Router();
 
 router.get('/', getStates);

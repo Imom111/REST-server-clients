@@ -46,8 +46,6 @@ BEGIN
 END
 // DELIMITER ;
 
-SELECT * FROM customer;
-
 INSERT INTO state (name) VALUES ('AGUASCALIENTES');
 INSERT INTO municipality (name, idstate_municipality) VALUES ('AGUASCALIENTES',1);
 INSERT INTO municipality (name, idstate_municipality) VALUES ('ASIENTOS',1);

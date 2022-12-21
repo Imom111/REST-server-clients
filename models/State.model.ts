@@ -1,6 +1,8 @@
+/* Importing the DataTypes and the connection to the database. */
 import { DataTypes } from 'sequelize';
 import db from '../db/connection';
 
+/* Creating a table in the database. */
 const State = db.define( 'State',
 {
 	idState: {
