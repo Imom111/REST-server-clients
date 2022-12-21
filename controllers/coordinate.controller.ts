@@ -38,7 +38,11 @@ export const searchCoordinates = async( req: Request ,res: Response) => {
         
         // The first result option is always used
         const result = data.features[0];
-        
+        if ( !result ) {
+            return res.status(404).json({
+                msg: 'Coordinates did not found'
+            });
+        }
         res.json({
             lng: result.center[0],
             lat: result.center[1]

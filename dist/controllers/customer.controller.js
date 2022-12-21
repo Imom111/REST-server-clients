@@ -104,7 +104,7 @@ const searchCustomersByAttribute = (req, res) => __awaiter(void 0, void 0, void 
         }
         else {
             res.status(404).json({
-                msg: `The customer ${attribute}: ${query} does not exist in the database.`
+                msg: `The customer with ${attribute} equal to ${query} does not exist in the database.`
             });
         }
     }
@@ -117,25 +117,15 @@ const searchCustomersByAttribute = (req, res) => __awaiter(void 0, void 0, void 
 });
 exports.searchCustomersByAttribute = searchCustomersByAttribute;
 /**
- * It receives a request and a response object, then it tries to save the customer, if it fails, it
- * returns a 500 status code with a message, if it succeeds, it returns a 200 status code with a
- * message
+ * It takes a request and a response object, and then it tries to save a customer to the database
  * @param {Request} req - Request - This is the request object that contains the data sent from the
  * client.
- * @param {Response} res - Response - This is the response object that will be sent back to the client.
- * @returns A function that takes in a request and response object.
+ * @param {Response} res - Response - This is the response object that we will use to send a response
+ * back to the client.
  */
 const postCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body } = req;
-        const exists = yield Customer_model_1.default.findOne({
-            where: { full_name: body.full_name }
-        });
-        if (exists) {
-            return res.status(400).json({
-                msg: 'This customer already exists'
-            });
-        }
         const customer = Customer_model_1.default.build(body);
         yield customer.save();
         res.json({

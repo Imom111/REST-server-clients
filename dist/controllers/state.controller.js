@@ -108,14 +108,6 @@ exports.searchStatesByAttribute = searchStatesByAttribute;
 const postState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body } = req;
-        const exists = yield State_model_1.default.findOne({
-            where: { name: body.name }
-        });
-        if (exists) {
-            return res.status(400).json({
-                msg: 'This state already exists'
-            });
-        }
         const state = State_model_1.default.build(body);
         yield state.save();
         res.json({
