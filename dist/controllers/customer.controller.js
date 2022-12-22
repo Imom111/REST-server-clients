@@ -27,7 +27,11 @@ const Customer_model_1 = __importDefault(require("../models/Customer.model"));
  */
 const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const customers = yield Customer_model_1.default.findAll();
+        const customers = yield Customer_model_1.default.findAll({
+            where: {
+                status: true
+            }
+        });
         res.json({
             customers
         });

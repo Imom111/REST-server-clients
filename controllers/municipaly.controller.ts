@@ -14,7 +14,11 @@ import State from "../models/State.model";
  */
 export const getMunicipalities = async( req: Request ,res: Response) => {
     try {
-        const municipalities = await Municipality.findAll();
+        const municipalities = await Municipality.findAll({
+            where: {
+                status: true
+            }
+        });
         res.json({
             municipalities
         });
@@ -36,7 +40,10 @@ export const getMunicipalitiesByState = async( req: Request, res: Response) => {
         const { id } = req.params;
         const municipalities = await Municipality.findAll({
             where: {
-                idState_Municipality: id
+                [Op.and]: [
+                    { idState_Municipality: id },
+                    { status: true }
+                ]
             }
         });
         if ( municipalities ) {

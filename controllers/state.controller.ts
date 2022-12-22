@@ -13,7 +13,11 @@ import State from "../models/State.model";
  */
 export const getStates = async( req: Request ,res: Response) => {
     try {
-        const states = await State.findAll();
+        const states = await State.findAll({
+            where: {
+                status: true
+            }
+        });
         res.json({
             states
         });
