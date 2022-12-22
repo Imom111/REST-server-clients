@@ -60,7 +60,7 @@ export const existsMunicipalityById = async( id: number ) => {
  * @returns A boolean value
  */
 export const existsStateByName = async( name: string ) => {
-    const exists = await Customer.findOne({ where: { name }});
+    const exists = await State.findOne({ where: { name }});
     if ( exists ) {
         throw new Error(`The state ${ name } is already registered`);
     }

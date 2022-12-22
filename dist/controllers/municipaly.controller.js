@@ -24,7 +24,11 @@ const Municipality_model_1 = __importDefault(require("../models/Municipality.mod
  */
 const getMunicipalities = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const municipalities = yield Municipality_model_1.default.findAll();
+        const municipalities = yield Municipality_model_1.default.findAll({
+            where: {
+                status: true
+            }
+        });
         res.json({
             municipalities
         });
@@ -47,7 +51,10 @@ const getMunicipalitiesByState = (req, res) => __awaiter(void 0, void 0, void 0,
         const { id } = req.params;
         const municipalities = yield Municipality_model_1.default.findAll({
             where: {
-                idState_Municipality: id
+                [sequelize_1.Op.and]: [
+                    { idState_Municipality: id },
+                    { status: true }
+                ]
             }
         });
         if (municipalities) {

@@ -16,7 +16,11 @@ import Customer from "../models/Customer.model";
  */
 export const getCustomers = async( req: Request ,res: Response) => {
     try {
-        const customers = await Customer.findAll();
+        const customers = await Customer.findAll({
+            where: {
+                status: true
+            }
+        });
         res.json({
             customers
         });   

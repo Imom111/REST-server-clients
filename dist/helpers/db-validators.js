@@ -74,7 +74,7 @@ exports.existsMunicipalityById = existsMunicipalityById;
  * @returns A boolean value
  */
 const existsStateByName = (name) => __awaiter(void 0, void 0, void 0, function* () {
-    const exists = yield Customer_model_1.default.findOne({ where: { name } });
+    const exists = yield State_model_1.default.findOne({ where: { name } });
     if (exists) {
         throw new Error(`The state ${name} is already registered`);
     }
