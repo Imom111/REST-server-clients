@@ -1,6 +1,7 @@
 // Imports from other node packages
 import { Request, Response } from "express";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
+import db from "../db/connection";
 
 // Imports from other this project packages
 import Customer from "../models/Customer.model";
@@ -59,20 +60,18 @@ export const getCustomer = async( req: Request, res: Response) => {
     }
 }
 
-// export const searchCustomers = async( req: Request ,res: Response) => {
-//     const { query } = req.query;
-//     const customers = await Customer.query(
-//         'CALL login (:q)',
-//         {
-//             logging: console.log,
-//             replacements: { q: query },
-//             type: QueryTypes.SELECT
-//         }
-//       );
-//     res.json({
-//         customers
-//     });
-// }
+export const searchCustomers = async( req: Request ,res: Response) => {
+    const { query } = req.query;
+    const customers = await db.query(
+        `CALL searchCustomer ("${ query }")`,
+        {
+            type: QueryTypes.SELECT
+        }
+      );
+    res.json({
+        customers: customers[0]
+    });
+}
 
 /**
  * It searches for a customer by a given attribute and returns the customer if it exists

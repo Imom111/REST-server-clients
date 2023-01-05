@@ -19,7 +19,7 @@ router.post('/', [
     validateAll_1.validateAll
 ], customer_controller_1.postCustomer);
 router.get('/', customer_controller_1.getCustomers);
-// router.get('/search', searchCustomers);
+router.get('/search', customer_controller_1.searchCustomers);
 router.get('/search/:attribute', [
     (0, express_validator_1.check)('attribute', 'The attribute does not exists in customers').custom(db_validators_1.queryAttributeValidatorCustomer),
     validateAll_1.validateAll

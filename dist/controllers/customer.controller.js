@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCustomer = exports.putCustomer = exports.postCustomer = exports.searchCustomersByAttribute = exports.getCustomer = exports.getCustomers = void 0;
+exports.deleteCustomer = exports.putCustomer = exports.postCustomer = exports.searchCustomersByAttribute = exports.searchCustomers = exports.getCustomer = exports.getCustomers = void 0;
 const sequelize_1 = require("sequelize");
+const connection_1 = __importDefault(require("../db/connection"));
 // Imports from other this project packages
 const Customer_model_1 = __importDefault(require("../models/Customer.model"));
 /**
@@ -73,20 +74,16 @@ const getCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getCustomer = getCustomer;
-// export const searchCustomers = async( req: Request ,res: Response) => {
-//     const { query } = req.query;
-//     const customers = await Customer.query(
-//         'CALL login (:q)',
-//         {
-//             logging: console.log,
-//             replacements: { q: query },
-//             type: QueryTypes.SELECT
-//         }
-//       );
-//     res.json({
-//         customers
-//     });
-// }
+const searchCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { query } = req.query;
+    const customers = yield connection_1.default.query(`CALL searchCustomer ("${query}")`, {
+        type: sequelize_1.QueryTypes.SELECT
+    });
+    res.json({
+        customers: customers[0]
+    });
+});
+exports.searchCustomers = searchCustomers;
 /**
  * It searches for a customer by a given attribute and returns the customer if it exists
  * @param {Request} req - Request - This is the request object that contains the request information.

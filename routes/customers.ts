@@ -9,7 +9,7 @@ import {
     postCustomer,
     putCustomer,
     deleteCustomer,
-    // searchCustomers,
+    searchCustomers,
     searchCustomersByAttribute
 } from '../controllers/customer.controller';
 
@@ -42,7 +42,7 @@ router.post('/', [
 
 router.get('/', getCustomers);
 
-// router.get('/search', searchCustomers);
+router.get('/search', searchCustomers);
 
 router.get('/search/:attribute', [
     check('attribute', 'The attribute does not exists in customers').custom( queryAttributeValidatorCustomer ),
