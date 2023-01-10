@@ -2,10 +2,10 @@ DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
 
-CREATE TABLE state(
-	idState INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE state (
+    idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    status BOOLEAN DEFAULT true
+    status BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE municipality(
@@ -2853,7 +2853,7 @@ BEGIN
 END
 // DELIMITER ;
 
--- CALL insert_user('[Some customer name]', '[Some customer phone]', '[Some customer email]', '[Some customer housing]', '[Some customer street]', [Some customer postal_code], [Some idMunicipality], [some idUser]);
+-- CALL insert_customer('[Some customer name]', '[Some customer phone]', '[Some customer email]', '[Some customer housing]', '[Some customer street]', [Some customer postal_code], [Some idMunicipality], [some idUser]);
 CALL insert_customer('Ligia Villa Ferrándiz', '4771231212', 'ligia@gmail.com', 'SAN JOSE EL ALTO', 'BLVD AEROPUERTO', 37545, 823, 1);
 CALL insert_customer('Sancho Ribera Benavente', '4770101011', 'sancho@gmail.com', 'LA MANCHA', 'PUENTECILLAS', 36250, 1500, 1);
 CALL insert_customer('Bernardo Guerrero Hurtado', '4771041014', 'bernardo@gmail.com', 'CENTRO TUXTEPEC', 'CALLE MATAMOROS', 37104, 104, 1);
@@ -2917,10 +2917,6 @@ BEGIN
 	   SET @var_json_final = CONCAT(@var_json_final, JSON_OBJECT('email_customer', true));
 	END IF;
     
-    IF var_email != ( SELECT email FROM customer WHERE idCustomer = var_idCustomer ) THEN 
-	   SET @var_json_final = CONCAT(@var_json_final, JSON_OBJECT('email_customer', true));
-	END IF;
-
     IF var_housing != ( SELECT housing FROM customer WHERE idCustomer = var_idCustomer ) THEN 
 	   SET @var_json_final = CONCAT(@var_json_final, JSON_OBJECT('housing_customer', true));
 	END IF;
@@ -2954,9 +2950,6 @@ END
 // DELIMITER ;
 
 -- CALL update_customer([Some idCustomer], '[Some customer full_name]', '[Some customer phone]', '[Some customer email]', '[Some customer housing]', '[Some customer street]', [Some customer postal_code], [Some customer idMunicipality], [Some idUser]);
-CALL update_customer(1, 'FerrándizZ', '4770000000', 'fer@gmail.com', 'JOSE EL ALTO', 'AEROPUERTO', 37000, 800, 1);
+CALL update_customer(1, 'Ferrándiz', '4770000000', 'fer@gmail.com', 'JOSE EL ALTO', 'AEROPUERTO', 37000, 800, 1);
 
-SELECT * FROM log WHERE idTypeLog_Log != 4 ORDER BY date DESC;
-
-SELECT * FROM customer;
 

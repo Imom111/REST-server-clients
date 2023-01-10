@@ -1,3 +1,4 @@
+import { request } from "express";
 import Customer from "../models/Customer.model";
 import Municipality from "../models/Municipality.model";
 import State from "../models/State.model";
@@ -8,8 +9,9 @@ import State from "../models/State.model";
  * @returns A boolean value
  */
 export const existsCustomerByEmail = async( email: string ) => {
-    const exists = await Customer.findOne({ where: { email }});
-    if ( exists ) {
+    const customer = await Customer.findOne({ where: { email }});
+    if ( customer ) {
+        console.log( customer.dataValues.idCustomer );
         throw new Error(`The email ${ email } is already registered`);
     }
     return true;

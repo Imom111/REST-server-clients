@@ -123,8 +123,12 @@ exports.searchCustomersByAttribute = searchCustomersByAttribute;
 const postCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body } = req;
-        const customer = Customer_model_1.default.build(body);
-        yield customer.save();
+        console.log(body);
+        // const customers = await db.query(
+        //     `CALL insert_customer ("${ query }")
+        // );
+        // const customer = Customer.build( body );
+        // await customer.save();
         res.json({
             msg: 'Customer saved successfully'
         });
@@ -146,15 +150,19 @@ exports.postCustomer = postCustomer;
  */
 const putCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const { body } = req;
+        const id = req.params.id;
+        const { full_name, phone, email, housing, street, postal_code, idMunicipality_Customer } = req.body;
         const customer = yield Customer_model_1.default.findByPk(id);
         if (!customer) {
             return res.status(404).json({
                 msg: `The customer with id ${id} does not exist in the database.`
             });
         }
-        yield customer.update(body);
+        yield connection_1.default.query('CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, 1);', {
+            logging: console.log,
+            replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer)]
+        });
+        // await customer.update( body );
         res.json({
             msg: 'Customer updated successfully'
         });

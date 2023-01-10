@@ -1,6 +1,24 @@
 // Imports from other node packages
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import Customer from "../models/Customer.model";
+
+/**
+ * It checks if a customer with the given email exists in the database
+ * @param {string} email - string - The email to check
+ * @returns A boolean value
+ */
+export const existsCustomerByEmail = async( req: Request ,res: Response, next: NextFunction ) => {
+    const email = req.body.email;
+    const id = req.params.id;
+    const customer = await Customer.findOne({ where: { email }});
+    if ( customer ) {
+        if ( customer.dataValues.idCustomer != id ) {
+            throw new Error(`The email ${ email } is already registered`);
+        }
+    }
+    next();
+}
 
 /**
  * It takes in a request, response, and next function, and returns a response with a 400 status code

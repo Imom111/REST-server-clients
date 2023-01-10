@@ -22,8 +22,9 @@ const State_model_1 = __importDefault(require("../models/State.model"));
  * @returns A boolean value
  */
 const existsCustomerByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const exists = yield Customer_model_1.default.findOne({ where: { email } });
-    if (exists) {
+    const customer = yield Customer_model_1.default.findOne({ where: { email } });
+    if (customer) {
+        console.log(customer.dataValues.idCustomer);
         throw new Error(`The email ${email} is already registered`);
     }
     return true;
