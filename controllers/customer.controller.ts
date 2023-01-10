@@ -63,7 +63,7 @@ export const searchCustomers = async( req: Request ,res: Response) => {
         {
             type: QueryTypes.SELECT
         }
-      );
+    );
     res.json({
         customers: customers[0]
     });
@@ -111,8 +111,15 @@ export const searchCustomersByAttribute = async( req: Request ,res: Response) =>
 export const postCustomer = async( req: Request, res: Response) => {
     try {
         const { body } = req;
-        const customer = Customer.build( body );
-        await customer.save();
+        console.log(body);
+        
+        // const customers = await db.query(
+        //     `CALL insert_customer ("${ query }")
+        // );
+            
+        // const customer = Customer.build( body );
+        // await customer.save();
+
         res.json({
             msg: 'Customer saved successfully'
         });
@@ -133,8 +140,8 @@ export const postCustomer = async( req: Request, res: Response) => {
  */
 export const putCustomer = async( req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const { body } = req;
+        const id = req.params.id;
+        const { full_name, phone, email, housing, street, postal_code, idMunicipality_Customer } = req.body;
         const customer = await Customer.findByPk( id );
         if ( !customer ) {
             return res.status(404).json({
@@ -142,7 +149,13 @@ export const putCustomer = async( req: Request, res: Response) => {
             });
         }
 
-        await customer.update( body );
+        await db.query(
+            'CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, 1);', {
+                logging: console.log,
+                replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer)]
+            }
+        );
+        // await customer.update( body );
         res.json({
             msg: 'Customer updated successfully'
         });
