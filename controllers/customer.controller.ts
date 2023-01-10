@@ -18,9 +18,9 @@ import Customer from "../models/Customer.model";
 export const getCustomers = async( req: Request ,res: Response) => {
     try {
         const customers = await Customer.findAll();
-        res.json({
+        res.status(200).json({
             customers
-        });   
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({

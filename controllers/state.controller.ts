@@ -14,7 +14,7 @@ import State from "../models/State.model";
 export const getStates = async( req: Request ,res: Response) => {
     try {
         const states = await State.findAll();
-        res.json({
+        res.status(200).json({
             states
         });
     } catch (error) {

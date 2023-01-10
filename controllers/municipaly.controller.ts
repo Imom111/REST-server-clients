@@ -15,7 +15,7 @@ import State from "../models/State.model";
 export const getMunicipalities = async( req: Request ,res: Response) => {
     try {
         const municipalities = await Municipality.findAll();
-        res.json({
+        res.status(200).json({
             municipalities
         });
     } catch (error) {
