@@ -24,12 +24,8 @@ const State_model_1 = __importDefault(require("../models/State.model"));
  */
 const getStates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const states = yield State_model_1.default.findAll({
-            where: {
-                status: true
-            }
-        });
-        res.json({
+        const states = yield State_model_1.default.findAll();
+        res.status(200).json({
             states
         });
     }

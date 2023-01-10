@@ -24,12 +24,8 @@ const Municipality_model_1 = __importDefault(require("../models/Municipality.mod
  */
 const getMunicipalities = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const municipalities = yield Municipality_model_1.default.findAll({
-            where: {
-                status: true
-            }
-        });
-        res.json({
+        const municipalities = yield Municipality_model_1.default.findAll();
+        res.status(200).json({
             municipalities
         });
     }
