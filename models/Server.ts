@@ -54,6 +54,9 @@ class Server {
      * files in the `public` folder
      */
     middlewares() {
+
+        this.app.disable('etag');
+        
         // cors
         this.app.use( cors() )
 
