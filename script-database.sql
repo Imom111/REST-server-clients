@@ -2,9 +2,6 @@ DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
 
-SELECT * FROM log WHERE idTypeLog_Log = 1 ORDER BY date DESC;
-SELECT * FROM user;
-
 CREATE TABLE state (
     idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
