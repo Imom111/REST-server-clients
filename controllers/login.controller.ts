@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import bcryptjs from 'bcryptjs';
 import User from "../models/User.model";
-import { generarJWT } from "../helpers/generar-jwt";
+import { generarJWT } from "../helpers/create-jwt";
 
 export const logIn = async( req: Request, res: Response) => {
     try {
@@ -14,35 +14,27 @@ export const logIn = async( req: Request, res: Response) => {
                 msg: 'User not found'
             }); 
         }
-    
-        const validPassword = bcryptjs.compareSync( password, user.password );
-        if ( !validPassword ) {
-            return res.status(400).json({
-                msg: 'User or password are not correct'
-            }); 
-        }
-    
-        if ( !user.status ) {
+
+        if ( !userObj.dataValues.status ) {
             return res.status(400).json({
                 msg: 'User inactive'
             }); 
         }
 
-        const token = await generarJWT( user.id );
+        // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
+        const validPassword = password == userObj.dataValues.password;
 
-        res.json({
+        if ( !validPassword ) {
+            return res.status(400).json({
+                msg: 'User or password are not correct'
+            }); 
+        }
+        
+        const token = await generarJWT( userObj.dataValues.id );
+        return res.json({
             token
         });
 
-        if ( user == 'admin' && password == 'admin' ) {
-            return res.json({
-                token: 'token'
-            }); 
-        } else {
-            return res.status(400).json({
-                msg: 'Usuario o contraseña no son correctos'
-            });
-        }
     } catch (error) {
         console.log(error);
         res.status(500).json({
