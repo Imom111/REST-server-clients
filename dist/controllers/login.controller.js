@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logOut = exports.logIn = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_model_1 = __importDefault(require("../models/User.model"));
 const create_jwt_1 = require("../helpers/create-jwt");
 const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,31 +24,22 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 msg: 'User not found'
             });
         }
-        if (!user.status) {
+        if (!userObj.dataValues.status) {
             return res.status(400).json({
                 msg: 'User inactive'
             });
         }
-        const validPassword = bcryptjs_1.default.compareSync(password, user.password);
+        // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
+        const validPassword = password == userObj.dataValues.password;
         if (!validPassword) {
             return res.status(400).json({
                 msg: 'User or password are not correct'
             });
         }
-        const token = yield (0, create_jwt_1.generarJWT)(user.id);
-        res.json({
+        const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.id);
+        return res.json({
             token
         });
-        if (user == 'admin' && password == 'admin') {
-            return res.json({
-                token: 'token'
-            });
-        }
-        else {
-            return res.status(400).json({
-                msg: 'Usuario o contraseña no son correctos'
-            });
-        }
     }
     catch (error) {
         console.log(error);

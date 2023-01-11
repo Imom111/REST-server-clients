@@ -14,35 +14,27 @@ export const logIn = async( req: Request, res: Response) => {
                 msg: 'User not found'
             }); 
         }
-    
-        if ( !user.status ) {
+
+        if ( !userObj.dataValues.status ) {
             return res.status(400).json({
                 msg: 'User inactive'
             }); 
         }
 
-        const validPassword = bcryptjs.compareSync( password, user.password );
+        // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
+        const validPassword = password == userObj.dataValues.password;
+
         if ( !validPassword ) {
             return res.status(400).json({
                 msg: 'User or password are not correct'
             }); 
         }
-
-        const token = await generarJWT( user.id );
-
-        res.json({
+        
+        const token = await generarJWT( userObj.dataValues.id );
+        return res.json({
             token
         });
 
-        if ( user == 'admin' && password == 'admin' ) {
-            return res.json({
-                token: 'token'
-            }); 
-        } else {
-            return res.status(400).json({
-                msg: 'Usuario o contraseña no son correctos'
-            });
-        }
     } catch (error) {
         console.log(error);
         res.status(500).json({
