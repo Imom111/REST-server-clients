@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateAll = exports.existsCustomerByEmail = void 0;
+exports.validateAll = exports.existsUserByName = exports.existsUserByEmail = exports.existsCustomerByEmail = void 0;
 const express_validator_1 = require("express-validator");
 const Customer_model_1 = __importDefault(require("../models/Customer.model"));
+const User_model_1 = __importDefault(require("../models/User.model"));
 /**
  * It checks if a customer with the given email exists in the database
  * @param {string} email - string - The email to check
@@ -22,16 +23,47 @@ const Customer_model_1 = __importDefault(require("../models/Customer.model"));
  */
 const existsCustomerByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
-    const id = req.params.id;
     const customer = yield Customer_model_1.default.findOne({ where: { email } });
     if (customer) {
+        const id = req.params.id || 0;
         if (customer.dataValues.idCustomer != id) {
-            throw new Error(`The email ${email} is already registered`);
+            return res.status(404).json({
+                msg: `The email ${email} is already registered`
+            });
         }
     }
     next();
 });
 exports.existsCustomerByEmail = existsCustomerByEmail;
+const existsUserByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = req.body.email;
+    const user = yield User_model_1.default.findOne({ where: { email } });
+    if (user) {
+        const id = req.params.id || 0;
+        console.log({ id });
+        if (user.dataValues.idUser != id) {
+            return res.status(404).json({
+                msg: `The email ${email} is already registered`
+            });
+        }
+    }
+    next();
+});
+exports.existsUserByEmail = existsUserByEmail;
+const existsUserByName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const name = req.body.name;
+    const user = yield User_model_1.default.findOne({ where: { name } });
+    if (user) {
+        const id = req.params.id || 0;
+        if (user.dataValues.idUser != id) {
+            return res.status(404).json({
+                msg: `The name ${name} is already registered`
+            });
+        }
+    }
+    next();
+});
+exports.existsUserByName = existsUserByName;
 /**
  * It takes in a request, response, and next function, and returns a response with a 400 status code
  * and the errors if there are any

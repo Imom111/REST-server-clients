@@ -30,14 +30,6 @@ const User = db.define( 'user',
 		type: DataTypes.BOOLEAN,
 		defaultValue: true
 	},
-	idCustomer_User: {
-        type: DataTypes.INTEGER,
-		references: {
-			model: Customer,
-			key: 'idCustomer'
-		},
-		allowNull: false
-    },
 	idRole_User: {
         type: DataTypes.INTEGER,
 		references: {
