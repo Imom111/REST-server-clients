@@ -15,16 +15,16 @@ export const logIn = async( req: Request, res: Response) => {
             }); 
         }
     
+        if ( !user.status ) {
+            return res.status(400).json({
+                msg: 'User inactive'
+            }); 
+        }
+
         const validPassword = bcryptjs.compareSync( password, user.password );
         if ( !validPassword ) {
             return res.status(400).json({
                 msg: 'User or password are not correct'
-            }); 
-        }
-    
-        if ( !user.status ) {
-            return res.status(400).json({
-                msg: 'User inactive'
             }); 
         }
 

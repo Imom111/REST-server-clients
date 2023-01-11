@@ -25,15 +25,15 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 msg: 'User not found'
             });
         }
+        if (!user.status) {
+            return res.status(400).json({
+                msg: 'User inactive'
+            });
+        }
         const validPassword = bcryptjs_1.default.compareSync(password, user.password);
         if (!validPassword) {
             return res.status(400).json({
                 msg: 'User or password are not correct'
-            });
-        }
-        if (!user.status) {
-            return res.status(400).json({
-                msg: 'User inactive'
             });
         }
         const token = yield (0, generar_jwt_1.generarJWT)(user.id);
