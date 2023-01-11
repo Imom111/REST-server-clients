@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.queryAttributeValidatorMunicipality = exports.queryAttributeValidatorState = exports.queryAttributeValidatorCustomer = exports.existsStateById = exports.existsStateByName = exports.existsMunicipalityById = exports.existsMuncipalityByName = exports.existsCustomerById = exports.existsCustomerByEmail = void 0;
+exports.existsUserById = exports.queryAttributeValidatorUser = exports.queryAttributeValidatorMunicipality = exports.queryAttributeValidatorState = exports.queryAttributeValidatorCustomer = exports.existsStateById = exports.existsStateByName = exports.existsMunicipalityById = exports.existsMuncipalityByName = exports.existsCustomerById = exports.existsCustomerByEmail = void 0;
 const Customer_model_1 = __importDefault(require("../models/Customer.model"));
 const Municipality_model_1 = __importDefault(require("../models/Municipality.model"));
 const State_model_1 = __importDefault(require("../models/State.model"));
+const User_model_1 = __importDefault(require("../models/User.model"));
 /**
  * It checks if a customer with the given email exists in the database
  * @param {string} email - string - The email to check
@@ -155,4 +156,27 @@ const queryAttributeValidatorMunicipality = (attribute) => {
     return true;
 };
 exports.queryAttributeValidatorMunicipality = queryAttributeValidatorMunicipality;
+const queryAttributeValidatorUser = (attribute) => {
+    const attributes = [
+        'idUser',
+        'name',
+        'email',
+        'status',
+        'idRole_User'
+    ];
+    const include = attributes.includes(attribute);
+    if (!include) {
+        throw new Error(`The attribute ${attribute} does not exists in the database`);
+    }
+    return true;
+};
+exports.queryAttributeValidatorUser = queryAttributeValidatorUser;
+const existsUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const exists = yield User_model_1.default.findByPk(id);
+    if (!exists) {
+        throw new Error(`The user id: ${id} does not exists in the database`);
+    }
+    return true;
+});
+exports.existsUserById = existsUserById;
 //# sourceMappingURL=db-validators.js.map

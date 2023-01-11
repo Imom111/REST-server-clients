@@ -8,11 +8,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logOut = exports.logIn = void 0;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const User_model_1 = __importDefault(require("../models/User.model"));
+const generar_jwt_1 = require("../helpers/generar-jwt");
 const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user, password } = req.body;
+        const userObj = yield User_model_1.default.findOne({ where: { name: user } });
+        if (!userObj) {
+            return res.status(400).json({
+                msg: 'User not found'
+            });
+        }
+        const validPassword = bcryptjs_1.default.compareSync(password, user.password);
+        if (!validPassword) {
+            return res.status(400).json({
+                msg: 'User or password are not correct'
+            });
+        }
+        if (!user.status) {
+            return res.status(400).json({
+                msg: 'User inactive'
+            });
+        }
+        const token = yield (0, generar_jwt_1.generarJWT)(user.id);
+        res.json({
+            token
+        });
         if (user == 'admin' && password == 'admin') {
             return res.json({
                 token: 'token'

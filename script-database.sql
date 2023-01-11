@@ -2,6 +2,9 @@ DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
 
+SELECT * FROM log WHERE idTypeLog_Log = 1 ORDER BY date DESC;
+SELECT * FROM user;
+
 CREATE TABLE state (
     idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -80,6 +83,19 @@ BEGIN
 	postal_code LIKE CONCAT( '%', param,'%') OR
 	status LIKE CONCAT( '%', param,'%') OR
 	idMunicipality_Customer LIKE CONCAT( '%', param,'%');
+END
+// DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE searchUser( IN param VARCHAR(255) )
+BEGIN
+	SELECT * FROM user WHERE
+	idUser LIKE CONCAT( '%', param,'%') OR
+    name LIKE CONCAT( '%', param,'%') OR
+	email LIKE CONCAT( '%', param,'%') OR
+	status LIKE CONCAT( '%', param,'%') OR
+	idRole_User LIKE CONCAT( '%', param,'%');
 END
 // DELIMITER ;
 

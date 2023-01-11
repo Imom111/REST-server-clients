@@ -22,6 +22,7 @@ const states_1 = __importDefault(require("../routes/states"));
 const customers_1 = __importDefault(require("../routes/customers"));
 const coordinates_1 = __importDefault(require("../routes/coordinates"));
 const login_1 = __importDefault(require("../routes/login"));
+const users_1 = __importDefault(require("../routes/users"));
 /* It's a class that creates an Express server, connects to a MySQL database, and sets up the routes
 for the API */
 class Server {
@@ -32,7 +33,8 @@ class Server {
             states: '/api/estados',
             customers: '/api/clientes',
             coordinates: '/api/coordenadas',
-            login: '/api/login'
+            login: '/api/login',
+            users: '/api/usuarios'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8081';
@@ -80,6 +82,7 @@ class Server {
         this.app.use(this.apiPaths.customers, customers_1.default);
         this.app.use(this.apiPaths.coordinates, coordinates_1.default);
         this.app.use(this.apiPaths.login, login_1.default);
+        this.app.use(this.apiPaths.users, users_1.default);
     }
     /**
      * The listen() function is a method of the app object that is created by the express() function.

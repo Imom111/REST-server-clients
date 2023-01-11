@@ -2,6 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import Customer from "../models/Customer.model";
+import User from "../models/User.model";
 
 /**
  * It checks if a customer with the given email exists in the database
@@ -10,11 +11,42 @@ import Customer from "../models/Customer.model";
  */
 export const existsCustomerByEmail = async( req: Request ,res: Response, next: NextFunction ) => {
     const email = req.body.email;
-    const id = req.params.id;
     const customer = await Customer.findOne({ where: { email }});
     if ( customer ) {
+        const id = req.params.id || 0;
         if ( customer.dataValues.idCustomer != id ) {
-            throw new Error(`The email ${ email } is already registered`);
+            return res.status(404).json({
+                msg: `The email ${ email } is already registered`
+            });
+        }
+    }
+    next();
+}
+
+export const existsUserByEmail = async( req: Request ,res: Response, next: NextFunction ) => {
+    const email = req.body.email;
+    const user = await User.findOne({ where: { email }});
+    if ( user ) {
+        const id = req.params.id || 0;
+        console.log({id});
+        if ( user.dataValues.idUser != id ) {
+            return res.status(404).json({
+                msg: `The email ${ email } is already registered`
+            });
+        }
+    }
+    next();
+}
+
+export const existsUserByName = async( req: Request ,res: Response, next: NextFunction ) => {
+    const name = req.body.name;
+    const user = await User.findOne({ where: { name }});
+    if ( user ) {
+        const id = req.params.id || 0;
+        if ( user.dataValues.idUser != id ) {
+            return res.status(404).json({
+                msg: `The name ${ name } is already registered`
+            });
         }
     }
     next();

@@ -2,6 +2,7 @@ import { request } from "express";
 import Customer from "../models/Customer.model";
 import Municipality from "../models/Municipality.model";
 import State from "../models/State.model";
+import User from "../models/User.model";
 
 /**
  * It checks if a customer with the given email exists in the database
@@ -138,6 +139,29 @@ export const queryAttributeValidatorMunicipality = ( attribute: string ) => {
     const include = attributes.includes( attribute );
     if ( !include ) {
         throw new Error(`The attribute ${ attribute } does not exists in the database`);
+    }
+    return true;
+}
+
+export const queryAttributeValidatorUser = ( attribute: string ) => {
+    const attributes: string[] = [
+        'idUser',
+        'name',
+        'email',
+        'status',
+        'idRole_User'
+    ];
+    const include = attributes.includes( attribute );
+    if ( !include ) {
+        throw new Error(`The attribute ${ attribute } does not exists in the database`);
+    }
+    return true;
+}
+
+export const existsUserById = async( id: number ) => {
+    const exists = await User.findByPk(id);
+    if ( !exists ) {
+        throw new Error(`The user id: ${ id } does not exists in the database`);
     }
     return true;
 }

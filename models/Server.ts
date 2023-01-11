@@ -9,6 +9,7 @@ import stateRoutes from '../routes/states';
 import customerRoutes from '../routes/customers';
 import coordinateRoutes from '../routes/coordinates';
 import loginRoutes from '../routes/login';
+import userRoutes from '../routes/users';
 
 /* It's a class that creates an Express server, connects to a MySQL database, and sets up the routes
 for the API */
@@ -21,7 +22,8 @@ class Server {
         states: '/api/estados',
         customers: '/api/clientes',
         coordinates: '/api/coordenadas',
-        login: '/api/login'
+        login: '/api/login',
+        users: '/api/usuarios'
     }
 
     /* It's declaring the properties of the class. */
@@ -78,6 +80,7 @@ class Server {
         this.app.use( this.apiPaths.customers, customerRoutes );
         this.app.use( this.apiPaths.coordinates, coordinateRoutes );
         this.app.use( this.apiPaths.login, loginRoutes );
+        this.app.use( this.apiPaths.users, userRoutes );
     }
 
     /**
