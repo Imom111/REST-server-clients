@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 require('dotenv').config();
 /* This is creating a new instance of Sequelize. */
-const db = new sequelize_1.Sequelize(process.env.DB_DATABASENAME || "", process.env.DB_USERNAME || "", process.env.DB_PASSWORD || "", {
-    host: 'localhost',
-    dialect: 'mysql',
-    logging: false
-});
+const db = new sequelize_1.Sequelize(String(process.env.DB_URI));
 exports.default = db;
 //# sourceMappingURL=connection.js.map
