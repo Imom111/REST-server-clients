@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.logOut = exports.logIn = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_model_1 = __importDefault(require("../models/User.model"));
-const generar_jwt_1 = require("../helpers/generar-jwt");
+const create_jwt_1 = require("../helpers/create-jwt");
 const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user, password } = req.body;
@@ -36,7 +36,7 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 msg: 'User or password are not correct'
             });
         }
-        const token = yield (0, generar_jwt_1.generarJWT)(user.id);
+        const token = yield (0, create_jwt_1.generarJWT)(user.id);
         res.json({
             token
         });
