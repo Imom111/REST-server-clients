@@ -131,7 +131,7 @@ export const searchLogs = async( req: Request ,res: Response) => {
     const logAll = Object.values(logs[0]);
     
     for (let index = 0; index < logAll.length; index++) {
-        logFinal.push(createDescriptionLog(logAll[index]));
+        logFinal.push( createDescriptionLog(logAll[index]) );
     }
     res.json({
         resutls: logFinal
