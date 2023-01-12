@@ -31,8 +31,14 @@ export const getUser = async( req: Request, res: Response) => {
         const { id } = req.params;
         const user = await User.findByPk( id );
         if ( user ) {
-            res.json({
-                user
+            res.status(200).json({
+                idUser: user.dataValues.idUser,
+                name: user.dataValues.name,
+                password: user.dataValues.password,
+                email: user.dataValues.email,
+                token: user.dataValues.token,
+                status: user.dataValues.status,
+                idRole_User: user.dataValues.idRole_User
             });
         } else {
             res.status(404).json({
