@@ -40,8 +40,14 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { id } = req.params;
         const user = yield User_model_1.default.findByPk(id);
         if (user) {
-            res.json({
-                user
+            res.status(200).json({
+                idUser: user.dataValues.idUser,
+                name: user.dataValues.name,
+                password: user.dataValues.password,
+                email: user.dataValues.email,
+                token: user.dataValues.token,
+                status: user.dataValues.status,
+                idRole_User: user.dataValues.idRole_User
             });
         }
         else {
