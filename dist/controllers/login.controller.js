@@ -21,24 +21,28 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userObj = yield User_model_1.default.findOne({ where: { name: user } });
         if (!userObj) {
             return res.status(400).json({
-                msg: 'User not found'
+                msg: 'User not found',
+                ok: false
             });
         }
         if (!userObj.dataValues.status) {
             return res.status(400).json({
-                msg: 'User inactive'
+                msg: 'User inactive',
+                ok: false
             });
         }
         // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
         const validPassword = password == userObj.dataValues.password;
         if (!validPassword) {
             return res.status(400).json({
-                msg: 'User or password are not correct'
+                msg: 'User or password are not correct',
+                ok: false
             });
         }
         const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.id);
         return res.json({
-            token
+            token,
+            ok: true
         });
     }
     catch (error) {

@@ -11,13 +11,15 @@ export const logIn = async( req: Request, res: Response) => {
         const userObj = await User.findOne({ where: { name: user } });
         if ( !userObj ) {
             return res.status(400).json({
-                msg: 'User not found'
+                msg: 'User not found',
+                ok: false
             }); 
         }
 
         if ( !userObj.dataValues.status ) {
             return res.status(400).json({
-                msg: 'User inactive'
+                msg: 'User inactive',
+                ok: false
             }); 
         }
 
@@ -26,13 +28,15 @@ export const logIn = async( req: Request, res: Response) => {
 
         if ( !validPassword ) {
             return res.status(400).json({
-                msg: 'User or password are not correct'
+                msg: 'User or password are not correct',
+                ok: false
             }); 
         }
         
         const token = await generarJWT( userObj.dataValues.id );
         return res.json({
-            token
+            token,
+            ok: true
         });
 
     } catch (error) {
