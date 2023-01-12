@@ -41,7 +41,15 @@ export const getCustomer = async( req: Request, res: Response) => {
         const customer = await Customer.findByPk( id );
         if ( customer ) {
             res.json({
-                customer
+                idCustomer: customer.dataValues.idCustomer,
+                full_name: customer.dataValues.full_name,
+                phone: customer.dataValues.phone,
+                email: customer.dataValues.email,
+                housing: customer.dataValues.housing,
+                street: customer.dataValues.street,
+                postal_code: customer.dataValues.postal_code,
+                status: customer.dataValues.status,
+                idMunicipality_Customer: customer.dataValues.idMunicipality_Customer
             });
         } else {
             res.status(404).json({
