@@ -14,13 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.putUser = exports.postUser = exports.searchUsersByAttribute = exports.searchUsers = exports.getUser = exports.getUsers = void 0;
 const sequelize_1 = require("sequelize");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const connection_1 = __importDefault(require("../db/connection"));
 // Imports from other this project packages
 const User_model_1 = __importDefault(require("../models/User.model"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield User_model_1.default.findAll({
-            where: { status: true }
+        const users = yield connection_1.default.query(`SELECT * FROM users`, {
+            type: sequelize_1.QueryTypes.SELECT
         });
         res.status(200).json({
             users
@@ -97,9 +98,11 @@ const searchUsersByAttribute = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.searchUsersByAttribute = searchUsersByAttribute;
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, password, email, idRole_User } = req.body;
+        const { name, email, idRole_User } = req.body;
+        const salt = bcryptjs_1.default.genSaltSync();
+        const paswrd = bcryptjs_1.default.hashSync(req.body.password, salt);
         yield connection_1.default.query('CALL insert_user(?, ?, ?, ?, 1);', {
-            replacements: [name, password, email, Number(idRole_User)]
+            replacements: [name, paswrd, email, Number(idRole_User)]
         });
         res.json({
             msg: 'User saved successfully'
@@ -116,15 +119,17 @@ exports.postUser = postUser;
 const putUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
-        const { name, password, email, status, idRole_User } = req.body;
+        const { name, email, status, idRole_User } = req.body;
         const user = yield User_model_1.default.findByPk(id);
         if (!user) {
             return res.status(404).json({
                 msg: `The user with id ${id} does not exist in the database.`
             });
         }
-        yield connection_1.default.query('CALL update_user(?, ?, ?, ?, ?, 1);', {
-            replacements: [Number(id), name, password, email, Boolean(status), Number(idRole_User)]
+        const salt = bcryptjs_1.default.genSaltSync();
+        const paswrd = bcryptjs_1.default.hashSync(req.body.password, salt);
+        yield connection_1.default.query('CALL update_user(?, ?, ?, ?, ?, ?, 1);', {
+            replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User)]
         });
         res.json({
             msg: 'User updated successfully'
