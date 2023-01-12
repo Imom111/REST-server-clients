@@ -12,9 +12,12 @@ export const logsAll = async( req: Request, res: Response) => {
                 type: QueryTypes.SELECT
             }
         );
-        console.log(createDescriptionLog(log[0]));
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     } catch (error) {
         console.log(error);
@@ -32,8 +35,12 @@ export const logsCustomer = async( req: Request, res: Response) => {
                 type: QueryTypes.SELECT
             }
         );
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     } catch (error) {
         console.log(error);
@@ -51,8 +58,12 @@ export const logsStates = async( req: Request, res: Response) => {
                 type: QueryTypes.SELECT
             }
         );
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     } catch (error) {
         console.log(error);
@@ -70,8 +81,12 @@ export const logsMunicipalities = async( req: Request, res: Response) => {
                 type: QueryTypes.SELECT
             }
         );
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     } catch (error) {
         console.log(error);
@@ -89,8 +104,12 @@ export const logsUsers = async( req: Request, res: Response) => {
                 type: QueryTypes.SELECT
             }
         );
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     } catch (error) {
         console.log(error);

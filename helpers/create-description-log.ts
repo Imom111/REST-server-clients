@@ -1,25 +1,26 @@
 
 export const createDescriptionLog = ( log: descriptionLog ) => {
-    let description = '';
-    const jsonValue = JSON.parse(log.value);
-    if ( log.actionLog_description == 'Inserción' ) {
-        description += `Se insertaron los siguientes datos: `;
-        description += Object.values(jsonValue);
-        description += ` en la tabla ${ log.typeLog_description }`;
-    }
+    let description = 'some';
+    // const jsonValue = JSON.parse(log.value);
     
-    if ( log.actionLog_description == 'Actualización' ) {
-        description += `Se actualizaron los siguientes datos: `;
-        description += Object.keys(jsonValue);
-        // where true
-        description += ` en la tabla ${ log.typeLog_description }`;
-    }
+    // if ( log.actionLog_description == 'Inserción' ) {
+    //     description += `Se insertaron los siguientes datos: `;
+    //     description += Object.values(jsonValue);
+    //     description += ` en la tabla ${ log.typeLog_description }`;
+    // }
     
-    if ( log.actionLog_description == 'ELiminación lógica' ) {
-        description += `Se eliminó de forma lógica el siguiente registro `;
-        description += Object.values(jsonValue);
-        description += ` en la tabla ${ log.typeLog_description }`;
-    }
+    // if ( log.actionLog_description == 'Actualización' ) {
+    //     description += `Se actualizaron los siguientes datos: `;
+    //     description += Object.keys(jsonValue);
+    //     // where true
+    //     description += ` en la tabla ${ log.typeLog_description }`;
+    // }
+    
+    // if ( log.actionLog_description == 'ELiminación lógica' ) {
+    //     description += `Se eliminó de forma lógica el siguiente registro `;
+    //     description += Object.values(jsonValue);
+    //     description += ` en la tabla ${ log.typeLog_description }`;
+    // }
     
     return {
         idLog: log.idLog,
