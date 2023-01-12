@@ -18,6 +18,7 @@ import  {
     existsCustomerById,
     queryAttributeValidatorCustomer
 } from "../helpers/db-validators";
+import { validateJWT } from '../middlewares/jwt-validate';
 
 import  {
     existsCustomerByEmail,
@@ -28,6 +29,8 @@ import  {
 const router = Router();
 
 router.post('/', [
+    validateJWT,
+    validateAll,
     check('email', 'The email is not valid').isEmail(),
     existsCustomerByEmail,
     check('postal_code', 'The postal code should be numeric').isNumeric(),
@@ -36,21 +39,33 @@ router.post('/', [
     validateAll
 ], postCustomer);
 
-router.get('/', getCustomers);
+router.get('/', [
+    validateJWT,
+    validateAll
+], getCustomers);
 
-router.get('/search', searchCustomers);
+router.get('/search', [
+    validateJWT,
+    validateAll
+], searchCustomers);
 
 router.get('/search/:attribute', [
+    validateJWT,
+    validateAll,
     check('attribute', 'The attribute does not exists in customers').custom( queryAttributeValidatorCustomer ),
     validateAll
 ], searchCustomersByAttribute);
 
 router.get('/:id', [
+    validateJWT,
+    validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     validateAll
 ], getCustomer);
 
 router.put('/:id', [
+    validateJWT,
+    validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id customer does not exists in the database').custom( existsCustomerById ),
     check('email', 'The email is not valid').isEmail(),
@@ -62,6 +77,8 @@ router.put('/:id', [
 ], putCustomer);
 
 router.delete('/:id', [
+    validateJWT,
+    validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id customer does not exists in the database').custom( existsCustomerById ),
     validateAll
