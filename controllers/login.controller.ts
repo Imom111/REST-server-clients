@@ -23,8 +23,7 @@ export const logIn = async( req: Request, res: Response) => {
             }); 
         }
 
-        // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
-        const validPassword = password == userObj.dataValues.password;
+        const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
 
         if ( !validPassword ) {
             return res.status(400).json({

@@ -11,5 +11,6 @@ router.get('/clientes', log_controller_1.logsCustomer);
 router.get('/estados', log_controller_1.logsStates);
 router.get('/municipios', log_controller_1.logsMunicipalities);
 router.get('/usuarios', log_controller_1.logsUsers);
+router.get('/search', log_controller_1.searchLogs);
 exports.default = router;
 //# sourceMappingURL=log.js.map

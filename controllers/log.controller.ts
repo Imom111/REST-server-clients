@@ -118,3 +118,16 @@ export const logsUsers = async( req: Request, res: Response) => {
         });
     }
 }
+
+export const searchLogs = async( req: Request ,res: Response) => {
+    const { query } = req.query;
+    const logs = await db.query(
+        `CALL searchLog ("${ query }")`,
+        {
+            type: QueryTypes.SELECT
+        }
+    );
+    res.json({
+        logs: logs[0]
+    });
+}
