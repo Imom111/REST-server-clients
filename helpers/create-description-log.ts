@@ -48,7 +48,6 @@ const createDescriptionDelete = (values: string) => {
     const val = JSON.parse(values);
     const arrayValues = Object.entries(val);
     description += arrayValues[0][1];
-    
     return description;
 }
 
