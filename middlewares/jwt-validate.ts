@@ -10,22 +10,23 @@ export const validateJWT = async( req: Request ,res: Response, next: NextFunctio
         });
     }
     try {
-        const { uid } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
-        const user = await User.findByPk( uid );
+        const { idUser } = jwt.verify( String(token), process.env.SECRETORPRIVATEKEY || '' );
+        
+        const user = await User.findByPk( Number(idUser) );
 
         if ( !user ) {
             return res.status(401).json({
-                msg: 'Token no válido - Usuario no encontrado'
+                msg: 'User not found'
             });
         }
-
-        if ( !user.estado ) {
+        
+        if ( !user.dataValues.status ) {
             return res.status(401).json({
-                msg: 'Token no válido - Usuario estado: false'
+                msg: 'User not active'
             }); 
         }
+        req.user = user.dataValues;
 
-        req.user = user;
         next();
     } catch (error) {
         console.log(error);

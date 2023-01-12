@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
-
+SELECT * FROM user;
 CREATE TABLE state (
     idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -54,6 +54,12 @@ CREATE TABLE typeLog(
 	idTypeLog INT PRIMARY KEY AUTO_INCREMENT,
     description VARCHAR(1023) NOT NULL
 );
+
+CREATE OR REPLACE VIEW users AS
+	SELECT user.name AS name, user.email AS email, role.name AS role
+		FROM user
+		INNER JOIN role
+		ON user.idRole_User = role.idRole;
 
 CREATE TABLE log(
 	idLog INT PRIMARY KEY AUTO_INCREMENT,

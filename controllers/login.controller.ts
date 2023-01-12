@@ -32,7 +32,7 @@ export const logIn = async( req: Request, res: Response) => {
             }); 
         }
         
-        const token = await generarJWT( userObj.dataValues.id );
+        const token = await generarJWT( userObj.dataValues.idUser );
         return res.json({
             token,
             ok: true

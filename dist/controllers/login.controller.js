@@ -39,7 +39,7 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 ok: false
             });
         }
-        const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.id);
+        const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.idUser);
         return res.json({
             token,
             ok: true
