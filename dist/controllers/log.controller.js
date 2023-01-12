@@ -21,9 +21,12 @@ const logsAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const log = yield connection_1.default.query(`SELECT * FROM logAll`, {
             type: sequelize_1.QueryTypes.SELECT
         });
-        console.log((0, create_description_log_1.createDescriptionLog)(log[0]));
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     }
     catch (error) {
@@ -39,8 +42,12 @@ const logsCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const log = yield connection_1.default.query(`SELECT * FROM logCustomer`, {
             type: sequelize_1.QueryTypes.SELECT
         });
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     }
     catch (error) {
@@ -56,8 +63,12 @@ const logsStates = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const log = yield connection_1.default.query(`SELECT * FROM logState`, {
             type: sequelize_1.QueryTypes.SELECT
         });
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     }
     catch (error) {
@@ -73,8 +84,12 @@ const logsMunicipalities = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const log = yield connection_1.default.query(`SELECT * FROM logMunicipality`, {
             type: sequelize_1.QueryTypes.SELECT
         });
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     }
     catch (error) {
@@ -90,8 +105,12 @@ const logsUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const log = yield connection_1.default.query(`SELECT * FROM logUser`, {
             type: sequelize_1.QueryTypes.SELECT
         });
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
         res.json({
-            log
+            resutls: logFinal
         });
     }
     catch (error) {
