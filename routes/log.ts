@@ -10,21 +10,44 @@ import {
     logsUsers,
     searchLogs
 } from '../controllers/log.controller';
+import { validateJWT } from '../middlewares/jwt-validate';
+import { validateRole } from '../middlewares/role-validate';
+import { validateAll } from '../middlewares/validateAll';
 
 
 /* Creating a router object and then adding routes to it. */
 const router = Router();
 
-router.get('/', logsAll);
+router.get('/', [
+    validateJWT,
+    validateAll
+], logsAll);
 
-router.get('/clientes', logsCustomer);
+router.get('/clientes', [
+    validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll
+], logsCustomer);
 
-router.get('/estados', logsStates);
+router.get('/estados', [
+    validateJWT,
+    validateAll
+], logsStates);
 
-router.get('/municipios', logsMunicipalities);
+router.get('/municipios', [
+    validateJWT,
+    validateAll
+], logsMunicipalities);
 
-router.get('/usuarios', logsUsers);
+router.get('/usuarios', [
+    validateJWT,
+    validateAll
+], logsUsers);
 
-router.get('/search', searchLogs);
+router.get('/search', [
+    validateJWT,
+    validateAll
+], searchLogs);
 
 export default router;

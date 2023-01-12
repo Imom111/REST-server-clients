@@ -23,19 +23,19 @@ const validateJWT = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     try {
-        const { uid } = jsonwebtoken_1.default.verify(token, process.env.SECRETORPRIVATEKEY);
-        const user = yield User_model_1.default.findByPk(uid);
+        const { idUser } = jsonwebtoken_1.default.verify(String(token), process.env.SECRETORPRIVATEKEY || '');
+        const user = yield User_model_1.default.findByPk(Number(idUser));
         if (!user) {
             return res.status(401).json({
-                msg: 'Token no válido - Usuario no encontrado'
+                msg: 'User not found'
             });
         }
-        if (!user.estado) {
+        if (!user.dataValues.status) {
             return res.status(401).json({
-                msg: 'Token no válido - Usuario estado: false'
+                msg: 'User not active'
             });
         }
-        req.user = user;
+        req.user = user.dataValues;
         next();
     }
     catch (error) {

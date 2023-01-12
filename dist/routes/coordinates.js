@@ -4,8 +4,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 // Imports from other this project packages
 const coordinate_controller_1 = require("../controllers/coordinate.controller");
+const jwt_validate_1 = require("../middlewares/jwt-validate");
+const validateAll_1 = require("../middlewares/validateAll");
 /* This is a router. It is a middleware that is used to handle HTTP requests. */
 const router = (0, express_1.Router)();
-router.get('/', coordinate_controller_1.searchCoordinates);
+router.get('/', [
+    jwt_validate_1.validateJWT,
+    validateAll_1.validateAll
+], coordinate_controller_1.searchCoordinates);
 exports.default = router;
 //# sourceMappingURL=coordinates.js.map
