@@ -1,6 +1,7 @@
 // Imports from other node packages
 import { Request, Response } from "express";
 import { Op, QueryTypes } from "sequelize";
+import bcryptjs from 'bcryptjs';
 import db from "../db/connection";
 
 // Imports from other this project packages
@@ -8,9 +9,12 @@ import User from "../models/User.model";
 
 export const getUsers = async( req: Request ,res: Response) => {
     try {
-        const users = await User.findAll({
-            where: { status: true }
-        });
+        const users = await db.query(
+            `SELECT * FROM users`,
+            {
+                type: QueryTypes.SELECT
+            }
+        );
         res.status(200).json({
             users
         });
@@ -84,11 +88,13 @@ export const searchUsersByAttribute = async( req: Request ,res: Response) => {
 
 export const postUser = async( req: Request, res: Response) => {
     try {
-        const { name, password, email, idRole_User } = req.body;
+        const { name, email, idRole_User } = req.body;
+        const salt = bcryptjs.genSaltSync();
+        const paswrd = bcryptjs.hashSync( req.body.password, salt );
         
         await db.query(
             'CALL insert_user(?, ?, ?, ?, 1);', {
-                replacements: [name, password, email, Number(idRole_User)]
+                replacements: [name, paswrd, email, Number(idRole_User)]
             }
         );
 
@@ -106,7 +112,7 @@ export const postUser = async( req: Request, res: Response) => {
 export const putUser = async( req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const { name, password, email, status, idRole_User } = req.body;
+        const { name, email, status, idRole_User } = req.body;
         
         const user = await User.findByPk( id );
         
@@ -116,9 +122,12 @@ export const putUser = async( req: Request, res: Response) => {
             });
         }
 
+        const salt = bcryptjs.genSaltSync();
+        const paswrd = bcryptjs.hashSync( req.body.password, salt );
+
         await db.query(
-            'CALL update_user(?, ?, ?, ?, ?, 1);', {
-                replacements: [Number(id), name, password, email, Boolean(status), Number(idRole_User)]
+            'CALL update_user(?, ?, ?, ?, ?, ?, 1);', {
+                replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User)]
             }
         );
 

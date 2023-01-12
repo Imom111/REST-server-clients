@@ -217,8 +217,8 @@ END
 -- ***************************************** --
 
 INSERT INTO role(name) VALUES ('Super administrador');
-INSERT INTO user(name, password, email, idRole_User) VALUES('admin', 'admin', 'admin@gmail.com', 1);
-
+INSERT INTO user(name, password, email, idRole_User) VALUES('admin', '$2a$10$xo/2q1Xder6p5m9oOBVrnOiODMk.k1xvPfxz6FB7iiI2ENTkuP22i', 'admin@gmail.com', 1);
+-- password: admin
 INSERT INTO actionLog ( description ) VALUES ( 'Inserción' );
 INSERT INTO actionLog ( description ) VALUES ( 'Actualización' );
 INSERT INTO actionLog ( description ) VALUES ( 'ELiminación lógica' );
@@ -334,12 +334,18 @@ END
 // DELIMITER ;
 
 -- CALL insert_user('[Some user name]', '[Some user password]', '[Some user email]', [Some idRole], [some idUser]);
-CALL insert_user('Ivan123', '123', 'ivan123@gmail.com', 2, 1);
-CALL insert_user('Pureco123', '123', 'pureco123@gmail.com', 2, 1);
-CALL insert_user('Adrian123', '123', 'adrian123@gmail.com', 2, 1);
-CALL insert_user('Mau123', '123', 'mau123@gmail.com', 3, 1);
-CALL insert_user('Axel123', '123', 'axel123@gmail.com', 3, 1);
-CALL insert_user('Brenda123', '123', 'brenda123@gmail.com', 3, 1);
+CALL insert_user('Ivan123', '$2a$10$mr10pmSyiW4I5AKdGpFCku9iksJS8RNyotzqE/r/yVFxIbgddCsaq', 'ivan123@gmail.com', 2, 1);
+-- password: 123
+CALL insert_user('Pureco123', '$2a$10$kaJDyjKgaInGZ4a4W3wDIepWUYUxV8PB.Kmgu4alOFcibDV3gEpeu', 'pureco123@gmail.com', 2, 1);
+-- password: 123
+CALL insert_user('Adrian123', '$2a$10$fuaZdwXlEIWCTwtp6i9pguujOQfjq7PPRIBR2EIjWA5Ah5.y1dUvm', 'adrian123@gmail.com', 2, 1);
+-- password: 123
+CALL insert_user('Mau123', '$2a$10$NvSBnYDilvilhpQtZGZwOuNaASAf.hj5o59.dC2cejFkb6Hp7Eja6', 'mau123@gmail.com', 3, 1);
+-- password: 123
+CALL insert_user('Axel123', '$2a$10$luriInUKNh90fhzVBWgi1OkERLg/XS56OJ1vMmSgff4l8i8hdOfFG', 'axel123@gmail.com', 3, 1);
+-- password: 123
+CALL insert_user('Brenda123', '$2a$10$M9Fnz8mcyc.dIF/O/tSpo.WZ2ACZsj3NHhLjRj8OvAc/0.TOgWBfS', 'brenda123@gmail.com', 3, 1);
+-- password: 123
 
 DELIMITER //
 CREATE PROCEDURE delete_user( IN var_idUser INT,
