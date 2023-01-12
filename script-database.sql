@@ -320,7 +320,7 @@ CREATE PROCEDURE insert_state( IN var_name_state VARCHAR(255),
 							   IN var_id_user INT )
 BEGIN
 	INSERT INTO state ( name ) VALUES ( var_name_state );
-    INSERT INTO log (value, date, idTypeLog_Log, idTypeAction_Log, idUser_Log) VALUES(JSON_OBJECT('name_state', var_name_state ), NOW(), 4, 1, var_id_user);
+    INSERT INTO log (value, date, idTypeLog_Log, idTypeAction_Log, idUser_Log) VALUES(JSON_OBJECT('name_state', var_name_state ), NOW(), 3, 1, var_id_user);
 END
 // DELIMITER ;
 
@@ -2965,4 +2965,98 @@ END
 -- CALL update_customer([Some idCustomer], '[Some customer full_name]', '[Some customer phone]', '[Some customer email]', '[Some customer housing]', '[Some customer street]', [Some customer postal_code], [Some customer idMunicipality], [Some idUser]);
 CALL update_customer(1, 'Ferrándiz', '4770000000', 'fer@gmail.com', 'JOSE EL ALTO', 'AEROPUERTO', 37000, 800, 1);
 
+CREATE OR REPLACE VIEW logAll AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logUser AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 1
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logRole AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 2
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logState AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 3
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logMunicipality AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 4
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logCustomer AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 5
+    ORDER BY date DESC;
+    
+CREATE OR REPLACE VIEW logActionLog AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 6
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logTypeLog AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name, typeLog.description AS typeLog_description, actionLog.description AS actionLog_description
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+	INNER JOIN typeLog
+		ON log.idTypeLog_Log= typeLog.idTypeLog
+	INNER JOIN actionLog
+		ON log.idTypeAction_Log = actionLog.idActionLog
+    WHERE idTypeLog = 7
+    ORDER BY date DESC;
 

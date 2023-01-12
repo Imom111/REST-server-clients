@@ -21,28 +21,24 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userObj = yield User_model_1.default.findOne({ where: { name: user } });
         if (!userObj) {
             return res.status(400).json({
-                msg: 'User not found',
-                ok: false
+                msg: 'User not found'
             });
         }
         if (!userObj.dataValues.status) {
             return res.status(400).json({
-                msg: 'User inactive',
-                ok: false
+                msg: 'User inactive'
             });
         }
         // const validPassword = bcryptjs.compareSync( password, userObj.dataValues.password );
         const validPassword = password == userObj.dataValues.password;
         if (!validPassword) {
             return res.status(400).json({
-                msg: 'User or password are not correct',
-                ok: false
+                msg: 'User or password are not correct'
             });
         }
         const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.id);
         return res.json({
-            token,
-            ok: true
+            token
         });
     }
     catch (error) {
@@ -69,4 +65,4 @@ const logOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.logOut = logOut;
-//# sourceMappingURL=login.controller.js.map
+//# sourceMappingURL=login.controller%20copy.js.map
