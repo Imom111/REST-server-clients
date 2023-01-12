@@ -7,7 +7,8 @@ import {
     logsCustomer,
     logsStates,
     logsMunicipalities,
-    logsUsers
+    logsUsers,
+    searchLogs
 } from '../controllers/log.controller';
 
 
@@ -23,5 +24,7 @@ router.get('/estados', logsStates);
 router.get('/municipios', logsMunicipalities);
 
 router.get('/usuarios', logsUsers);
+
+router.get('/search', searchLogs);
 
 export default router;

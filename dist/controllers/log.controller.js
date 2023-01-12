@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logsUsers = exports.logsMunicipalities = exports.logsStates = exports.logsCustomer = exports.logsAll = void 0;
+exports.searchLogs = exports.logsUsers = exports.logsMunicipalities = exports.logsStates = exports.logsCustomer = exports.logsAll = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const create_description_log_1 = require("../helpers/create-description-log");
@@ -121,4 +121,14 @@ const logsUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.logsUsers = logsUsers;
+const searchLogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { query } = req.query;
+    const logs = yield connection_1.default.query(`CALL searchLog ("${query}")`, {
+        type: sequelize_1.QueryTypes.SELECT
+    });
+    res.json({
+        logs: logs[0]
+    });
+});
+exports.searchLogs = searchLogs;
 //# sourceMappingURL=log.controller.js.map
