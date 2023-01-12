@@ -131,6 +131,7 @@ const searchLogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     for (let index = 0; index < logAll.length; index++) {
         logFinal.push((0, create_description_log_1.createDescriptionLog)(logAll[index]));
     }
+    console.log(logFinal);
     res.json({
         resutls: logFinal
     });
