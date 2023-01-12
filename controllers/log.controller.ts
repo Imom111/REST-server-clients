@@ -127,7 +127,13 @@ export const searchLogs = async( req: Request ,res: Response) => {
             type: QueryTypes.SELECT
         }
     );
+    let logFinal = [];
+    const logAll = Object.values(logs[0]);
+    
+    for (let index = 0; index < logAll.length; index++) {
+        logFinal.push(createDescriptionLog(logAll[index]));
+    }
     res.json({
-        logs: logs[0]
+        resutls: logFinal
     });
 }

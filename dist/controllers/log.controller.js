@@ -126,8 +126,13 @@ const searchLogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const logs = yield connection_1.default.query(`CALL searchLog ("${query}")`, {
         type: sequelize_1.QueryTypes.SELECT
     });
+    let logFinal = [];
+    const logAll = Object.values(logs[0]);
+    for (let index = 0; index < logAll.length; index++) {
+        logFinal.push((0, create_description_log_1.createDescriptionLog)(logAll[index]));
+    }
     res.json({
-        logs: logs[0]
+        resutls: logFinal
     });
 });
 exports.searchLogs = searchLogs;

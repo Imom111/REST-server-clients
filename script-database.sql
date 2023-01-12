@@ -353,7 +353,7 @@ BEGIN
     INSERT INTO log ( value, date, idTypeLog_Log, idTypeAction_Log, idUser_Log ) VALUES(JSON_OBJECT('name_user', @username), NOW(), 1, 3, var_id_user);
 END
 // DELIMITER ;
-SELECT * FROM user;
+
 -- CALL delete_user([Some idUser], [Some idUser]);
 CALL delete_user(2, 1);
 
@@ -409,7 +409,6 @@ END
 
 -- CALL update_user([Some idUser], '[Some user name]', '[Some user password]', '[Some user email]', [Some idRole], [some idUser]);
 CALL update_user(2, 'Ivan1235', '1234', 'ivan123@gmail.com', true, 1, 1);
-SELECT 'Ivan1235' != (SELECT name FROM user WHERE idUser = 2);
 
 -- ***************************************** --
 -- ************** municipality ************* --
