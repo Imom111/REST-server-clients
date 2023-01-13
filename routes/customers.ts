@@ -42,12 +42,14 @@ router.post('/', [
     validateAll
 ], postCustomer);
 
-router.get('/', [
-    validateJWT,
-    validateAll,
-    validateRole(['Super administrador', 'Administrador', 'Visitador']),
-    validateAll,
-], getCustomers);
+// router.get('/', [
+//     validateJWT,
+//     validateAll,
+//     validateRole(['Super administrador', 'Administrador', 'Visitador']),
+//     validateAll,
+// ], getCustomers);
+
+router.get('/', getCustomers);
 
 router.get('/search', [
     validateJWT,

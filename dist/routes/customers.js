@@ -23,12 +23,13 @@ router.post('/', [
     (0, express_validator_1.check)('idMunicipality_Customer', 'Could not find municipality id').custom(db_validators_1.existsMunicipalityById),
     validateAll_1.validateAll
 ], customer_controller_1.postCustomer);
-router.get('/', [
-    jwt_validate_1.validateJWT,
-    validateAll_1.validateAll,
-    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador', 'Visitador']),
-    validateAll_1.validateAll,
-], customer_controller_1.getCustomers);
+// router.get('/', [
+//     validateJWT,
+//     validateAll,
+//     validateRole(['Super administrador', 'Administrador', 'Visitador']),
+//     validateAll,
+// ], getCustomers);
+router.get('/', customer_controller_1.getCustomers);
 router.get('/search', [
     jwt_validate_1.validateJWT,
     validateAll_1.validateAll,
