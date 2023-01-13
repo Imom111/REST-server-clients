@@ -17,11 +17,6 @@ import Customer from "../models/Customer.model";
  */
 export const getCustomers = async( req: Request ,res: Response) => {
     try {
-        console.log({q: req.query});
-        console.log({p: req.params});
-        console.log({b: req.body});
-        console.log({h: req.get('token')});
-        
         const customers = await Customer.findAll();
         res.status(200).json({
             customers
@@ -123,8 +118,14 @@ export const searchCustomersByAttribute = async( req: Request ,res: Response) =>
  */
 export const postCustomer = async( req: Request, res: Response) => {
     try {
-        const { body } = req;
-        console.log(body);
+
+        const { full_name, phone, email, housing, street, postal_code, idMunicipality_Customer } = req.body;
+        
+        await db.query(
+            'CALL insert_customer(?, ?, ?, ?, ?, ?, ?, ?);', {
+                replacements: [full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer), Number(req.user.idUser)]
+            }
+        );
         
         // const customers = await db.query(
         //     `CALL insert_customer ("${ query }")
@@ -163,9 +164,8 @@ export const putCustomer = async( req: Request, res: Response) => {
         }
 
         await db.query(
-            'CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, 1);', {
-                logging: console.log,
-                replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer)]
+            'CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, ?);', {
+                replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer), Number(req.user.idUser)]
             }
         );
         // await customer.update( body );
@@ -194,13 +194,19 @@ export const putCustomer = async( req: Request, res: Response) => {
 export const deleteCustomer = async( req: Request, res: Response) => {
     try {
         const { id } = req.params;
+        
         const customer = await Customer.findByPk( id );
         if ( !customer ) {
             return res.status(404).json({
                 msg: `The customer with id ${ id } does not exist in the database.`
             });
         }
-        await customer.update({ status: false });
+
+        await db.query(
+            'CALL update_customer(?, ?);', {
+                replacements: [ Number(id), Number(req.user.idUser) ]
+            }
+        );
         res.json({
             msg: 'The status customer has changed to inactive'
         });

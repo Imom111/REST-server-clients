@@ -14,7 +14,7 @@ const arrRoles = [
         idRole: 3,
         nameRole : 'Visitador',
     }
-]
+];
 
 
 export const validateRole = ( roles ) => {

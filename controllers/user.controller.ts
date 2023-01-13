@@ -99,8 +99,8 @@ export const postUser = async( req: Request, res: Response) => {
         const paswrd = bcryptjs.hashSync( req.body.password, salt );
         
         await db.query(
-            'CALL insert_user(?, ?, ?, ?, 1);', {
-                replacements: [name, paswrd, email, Number(idRole_User)]
+            'CALL insert_user(?, ?, ?, ?, ?);', {
+                replacements: [name, paswrd, email, Number(idRole_User), Number(req.user.idUser)]
             }
         );
 
@@ -132,8 +132,8 @@ export const putUser = async( req: Request, res: Response) => {
         const paswrd = bcryptjs.hashSync( req.body.password, salt );
 
         await db.query(
-            'CALL update_user(?, ?, ?, ?, ?, ?, 1);', {
-                replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User)]
+            'CALL update_user(?, ?, ?, ?, ?, ?, ?);', {
+                replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User), Number(req.user.idUser)]
             }
         );
 
@@ -160,8 +160,8 @@ export const deleteUser = async( req: Request, res: Response) => {
         }
 
         await db.query(
-            'CALL delete_user(?, 1);', {
-                replacements: [Number(id)]
+            'CALL delete_user(?, ?);', {
+                replacements: [Number(id), Number(req.user.idUser) ]
             }
         );
         
