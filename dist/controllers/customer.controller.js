@@ -28,6 +28,10 @@ const Customer_model_1 = __importDefault(require("../models/Customer.model"));
  */
 const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log({ q: req.query });
+        console.log({ p: req.params });
+        console.log({ b: req.body });
+        console.log({ h: req.get('token') });
         const customers = yield Customer_model_1.default.findAll();
         res.status(200).json({
             customers

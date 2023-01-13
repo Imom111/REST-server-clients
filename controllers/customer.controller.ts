@@ -17,6 +17,11 @@ import Customer from "../models/Customer.model";
  */
 export const getCustomers = async( req: Request ,res: Response) => {
     try {
+        console.log({q: req.query});
+        console.log({p: req.params});
+        console.log({b: req.body});
+        console.log({h: req.get('token')});
+        
         const customers = await Customer.findAll();
         res.status(200).json({
             customers

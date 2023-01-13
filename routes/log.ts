@@ -20,33 +20,43 @@ const router = Router();
 
 router.get('/', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsAll);
 
 router.get('/clientes', [
     validateJWT,
     validateAll,
-    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsCustomer);
 
 router.get('/estados', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsStates);
 
 router.get('/municipios', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsMunicipalities);
 
 router.get('/usuarios', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsUsers);
 
 router.get('/search', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], searchLogs);
 

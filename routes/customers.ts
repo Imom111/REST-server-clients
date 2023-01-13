@@ -19,6 +19,7 @@ import  {
     queryAttributeValidatorCustomer
 } from "../helpers/db-validators";
 import { validateJWT } from '../middlewares/jwt-validate';
+import { validateRole } from '../middlewares/role-validate';
 
 import  {
     existsCustomerByEmail,
@@ -31,6 +32,8 @@ const router = Router();
 router.post('/', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador']),
+    validateAll,
     check('email', 'The email is not valid').isEmail(),
     existsCustomerByEmail,
     check('postal_code', 'The postal code should be numeric').isNumeric(),
@@ -41,16 +44,22 @@ router.post('/', [
 
 router.get('/', [
     validateJWT,
-    validateAll
+    // validateAll,
+    // validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
 ], getCustomers);
 
 router.get('/search', [
     validateJWT,
-    validateAll
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
 ], searchCustomers);
 
 router.get('/search/:attribute', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
     validateAll,
     check('attribute', 'The attribute does not exists in customers').custom( queryAttributeValidatorCustomer ),
     validateAll
@@ -59,12 +68,16 @@ router.get('/search/:attribute', [
 router.get('/:id', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     validateAll
 ], getCustomer);
 
 router.put('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id customer does not exists in the database').custom( existsCustomerById ),
@@ -78,6 +91,8 @@ router.put('/:id', [
 
 router.delete('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id customer does not exists in the database').custom( existsCustomerById ),

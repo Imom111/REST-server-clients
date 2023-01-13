@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS customer_test;
 CREATE DATABASE customer_test;
 USE customer_test;
-SELECT * FROM role;
+
 CREATE TABLE state (
     idState INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
