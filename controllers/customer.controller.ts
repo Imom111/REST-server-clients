@@ -38,18 +38,24 @@ export const getCustomers = async( req: Request ,res: Response) => {
 export const getCustomer = async( req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const customer = await Customer.findByPk( id );
-        if ( customer ) {
+        const customer = await db.query(
+            `SELECT * FROM customer_state WHERE idCustomer = ${Number(id)}`,
+            {
+                type: QueryTypes.SELECT
+            }
+        );
+        if ( customer[0] ) {
             res.json({
-                idCustomer: customer.dataValues.idCustomer,
-                full_name: customer.dataValues.full_name,
-                phone: customer.dataValues.phone,
-                email: customer.dataValues.email,
-                housing: customer.dataValues.housing,
-                street: customer.dataValues.street,
-                postal_code: customer.dataValues.postal_code,
-                status: customer.dataValues.status,
-                idMunicipality_Customer: customer.dataValues.idMunicipality_Customer
+                idCustomer: customer[0].idCustomer,
+                full_name: customer[0].full_name,
+                phone: customer[0].phone,
+                email: customer[0].email,
+                housing: customer[0].housing,
+                street: customer[0].street,
+                postal_code: customer[0].postal_code,
+                status: customer[0].status,
+                idMunicipality_Customer: customer[0].idMunicipality_Customer,
+                idState_Customer: customer[0].idState
             });
         } else {
             res.status(404).json({
