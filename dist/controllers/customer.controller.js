@@ -28,10 +28,6 @@ const Customer_model_1 = __importDefault(require("../models/Customer.model"));
  */
 const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log({ q: req.query });
-        console.log({ p: req.params });
-        console.log({ b: req.body });
-        console.log({ h: req.get('token') });
         const customers = yield Customer_model_1.default.findAll();
         res.status(200).json({
             customers
@@ -134,8 +130,10 @@ exports.searchCustomersByAttribute = searchCustomersByAttribute;
  */
 const postCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { body } = req;
-        console.log(body);
+        const { full_name, phone, email, housing, street, postal_code, idMunicipality_Customer } = req.body;
+        yield connection_1.default.query('CALL insert_customer(?, ?, ?, ?, ?, ?, ?, ?);', {
+            replacements: [full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer), Number(req.user.idUser)]
+        });
         // const customers = await db.query(
         //     `CALL insert_customer ("${ query }")
         // );
@@ -170,9 +168,8 @@ const putCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: `The customer with id ${id} does not exist in the database.`
             });
         }
-        yield connection_1.default.query('CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, 1);', {
-            logging: console.log,
-            replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer)]
+        yield connection_1.default.query('CALL update_customer(?, ?, ?, ?, ?, ?, ?, ?, ?);', {
+            replacements: [Number(id), full_name, phone, email, housing, street, Number(postal_code), Number(idMunicipality_Customer), Number(req.user.idUser)]
         });
         // await customer.update( body );
         res.json({
@@ -207,7 +204,9 @@ const deleteCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 msg: `The customer with id ${id} does not exist in the database.`
             });
         }
-        yield customer.update({ status: false });
+        yield connection_1.default.query('CALL update_customer(?, ?);', {
+            replacements: [Number(id), Number(req.user.idUser)]
+        });
         res.json({
             msg: 'The status customer has changed to inactive'
         });

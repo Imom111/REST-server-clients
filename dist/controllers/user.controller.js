@@ -107,8 +107,8 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { name, email, idRole_User } = req.body;
         const salt = bcryptjs_1.default.genSaltSync();
         const paswrd = bcryptjs_1.default.hashSync(req.body.password, salt);
-        yield connection_1.default.query('CALL insert_user(?, ?, ?, ?, 1);', {
-            replacements: [name, paswrd, email, Number(idRole_User)]
+        yield connection_1.default.query('CALL insert_user(?, ?, ?, ?, ?);', {
+            replacements: [name, paswrd, email, Number(idRole_User), Number(req.user.idUser)]
         });
         res.json({
             msg: 'User saved successfully'
@@ -134,8 +134,8 @@ const putUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const salt = bcryptjs_1.default.genSaltSync();
         const paswrd = bcryptjs_1.default.hashSync(req.body.password, salt);
-        yield connection_1.default.query('CALL update_user(?, ?, ?, ?, ?, ?, 1);', {
-            replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User)]
+        yield connection_1.default.query('CALL update_user(?, ?, ?, ?, ?, ?, ?);', {
+            replacements: [Number(id), name, paswrd, email, Boolean(status), Number(idRole_User), Number(req.user.idUser)]
         });
         res.json({
             msg: 'User updated successfully'
@@ -158,8 +158,8 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 msg: `The user with id ${id} does not exist in the database.`
             });
         }
-        yield connection_1.default.query('CALL delete_user(?, 1);', {
-            replacements: [Number(id)]
+        yield connection_1.default.query('CALL delete_user(?, ?);', {
+            replacements: [Number(id), Number(req.user.idUser)]
         });
         res.json({
             msg: 'The status user has changed to inactive'
