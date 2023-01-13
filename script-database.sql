@@ -55,6 +55,23 @@ CREATE TABLE typeLog(
     description VARCHAR(1023) NOT NULL
 );
 
+CREATE OR REPLACE VIEW customer_state AS
+	SELECT customer.idCustomer,
+		customer.full_name,
+		customer.phone,
+		customer.email,
+		customer.housing,
+		customer.street,
+		customer.postal_code,
+		customer.status,
+		customer.idMunicipality_Customer,
+		state.idState
+	FROM customer
+	INNER JOIN municipality
+	ON municipality.idMunicipality = customer.idMunicipality_Customer
+	INNER JOIN state
+	ON state.idState = municipality.idState_Municipality;
+
 CREATE OR REPLACE VIEW users AS
 	SELECT user.idUser, user.name AS name, user.email AS email, role.name AS role
 		FROM user
