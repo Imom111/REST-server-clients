@@ -44,8 +44,8 @@ router.post('/', [
 
 router.get('/', [
     validateJWT,
-    // validateAll,
-    // validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
     validateAll,
 ], getCustomers);
 
