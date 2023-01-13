@@ -17,11 +17,18 @@ const arrRoles = [
 ]
 
 
-export const validateRole = ( ...roles ) => {
+export const validateRole = ( roles ) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        const { idUser, idRole_User } = req.user;
-        const rolSelected = arrRoles[idRole_User - 1].nameRole;
-        if ( !rolSelected.includes( roles )) {
+        
+        const { idRole_User } = req.user;
+        let rolSelected = '';
+        arrRoles.forEach(element => {
+            if ( element.idRole ==  idRole_User) {
+                rolSelected = element.nameRole
+            }
+        });
+        
+        if ( !roles.includes( rolSelected )) {
             return res.status(401).json({
                 msg: `No permisson for ${ rolSelected }`
             });

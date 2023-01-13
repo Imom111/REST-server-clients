@@ -25,8 +25,8 @@ router.post('/', [
 ], customer_controller_1.postCustomer);
 router.get('/', [
     jwt_validate_1.validateJWT,
-    // validateAll,
-    // validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador', 'Visitador']),
     validateAll_1.validateAll,
 ], customer_controller_1.getCustomers);
 router.get('/search', [
