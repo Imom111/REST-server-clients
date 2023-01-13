@@ -18,6 +18,7 @@ import  {
     queryAttributeValidatorState
 } from "../helpers/db-validators";
 import { validateJWT } from '../middlewares/jwt-validate';
+import { validateRole } from '../middlewares/role-validate';
 
 import  {
     validateAll
@@ -28,11 +29,15 @@ const router = Router();
 
 router.get('/', [
     validateJWT,
-    validateAll
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
 ], getStates);
 
 router.get('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id state does not exists in the database').custom( existsStateById ),
@@ -42,6 +47,8 @@ router.get('/:id', [
 router.get('/search/:attribute', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
     check('attribute', 'The attribute does not exists in states').custom( queryAttributeValidatorState ),
     validateAll
 ], searchStatesByAttribute);
@@ -49,12 +56,16 @@ router.get('/search/:attribute', [
 router.post('/', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador']),
+    validateAll,
     check('name', 'This name is already registered').custom( existsStateByName ),
     validateAll
 ], postState);
 
 router.put('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id state does not exists in the database').custom( existsStateById ),
@@ -64,6 +75,8 @@ router.put('/:id', [
 
 router.delete('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id state does not exists in the database').custom( existsStateById ),
