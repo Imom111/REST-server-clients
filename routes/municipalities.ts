@@ -20,6 +20,7 @@ import  {
     queryAttributeValidatorMunicipality
 } from "../helpers/db-validators";
 import { validateJWT } from '../middlewares/jwt-validate';
+import { validateRole } from '../middlewares/role-validate';
 
 import  {
     validateAll
@@ -30,11 +31,15 @@ const router = Router();
 
 router.get('/', [
     validateJWT,
-    validateAll
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
 ], getMunicipalities);
 
 router.get('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),
@@ -44,6 +49,8 @@ router.get('/:id', [
 router.get('/byEstado/:id', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id state does not exists in the database').custom( existsStateById ),
     validateAll
@@ -52,12 +59,16 @@ router.get('/byEstado/:id', [
 router.get('/search/:attribute', [
     validateJWT,
     validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll,
     check('attribute', 'The attribute does not exists in municipalities').custom( queryAttributeValidatorMunicipality ),
     validateAll
 ], searchMunicipalitiesByAttribute);
 
 router.post('/', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('name', 'This name is already registered').custom( existsMuncipalityByName ),
     check('idState_Municipality', 'The id state does not exists in the database').custom( existsStateById ),
@@ -66,6 +77,8 @@ router.post('/', [
 
 router.put('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),
@@ -76,6 +89,8 @@ router.put('/:id', [
 
 router.delete('/:id', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
     validateAll,
     check('id', 'The id should be numeric').isNumeric(),
     check('id', 'The id municipality does not exists in the database').custom( existsMunicipalityById ),

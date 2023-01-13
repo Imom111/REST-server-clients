@@ -7,11 +7,14 @@ const express_validator_1 = require("express-validator");
 const customer_controller_1 = require("../controllers/customer.controller");
 const db_validators_1 = require("../helpers/db-validators");
 const jwt_validate_1 = require("../middlewares/jwt-validate");
+const role_validate_1 = require("../middlewares/role-validate");
 const validateAll_1 = require("../middlewares/validateAll");
 /* Creating a router object and then adding routes to it. */
 const router = (0, express_1.Router)();
 router.post('/', [
     jwt_validate_1.validateJWT,
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador']),
     validateAll_1.validateAll,
     (0, express_validator_1.check)('email', 'The email is not valid').isEmail(),
     validateAll_1.existsCustomerByEmail,
@@ -22,14 +25,20 @@ router.post('/', [
 ], customer_controller_1.postCustomer);
 router.get('/', [
     jwt_validate_1.validateJWT,
-    validateAll_1.validateAll
+    // validateAll,
+    // validateRole(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll_1.validateAll,
 ], customer_controller_1.getCustomers);
 router.get('/search', [
     jwt_validate_1.validateJWT,
-    validateAll_1.validateAll
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll_1.validateAll,
 ], customer_controller_1.searchCustomers);
 router.get('/search/:attribute', [
     jwt_validate_1.validateJWT,
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador', 'Visitador']),
     validateAll_1.validateAll,
     (0, express_validator_1.check)('attribute', 'The attribute does not exists in customers').custom(db_validators_1.queryAttributeValidatorCustomer),
     validateAll_1.validateAll
@@ -37,11 +46,15 @@ router.get('/search/:attribute', [
 router.get('/:id', [
     jwt_validate_1.validateJWT,
     validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador', 'Visitador']),
+    validateAll_1.validateAll,
     (0, express_validator_1.check)('id', 'The id should be numeric').isNumeric(),
     validateAll_1.validateAll
 ], customer_controller_1.getCustomer);
 router.put('/:id', [
     jwt_validate_1.validateJWT,
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador']),
     validateAll_1.validateAll,
     (0, express_validator_1.check)('id', 'The id should be numeric').isNumeric(),
     (0, express_validator_1.check)('id', 'The id customer does not exists in the database').custom(db_validators_1.existsCustomerById),
@@ -54,6 +67,8 @@ router.put('/:id', [
 ], customer_controller_1.putCustomer);
 router.delete('/:id', [
     jwt_validate_1.validateJWT,
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador']),
     validateAll_1.validateAll,
     (0, express_validator_1.check)('id', 'The id should be numeric').isNumeric(),
     (0, express_validator_1.check)('id', 'The id customer does not exists in the database').custom(db_validators_1.existsCustomerById),

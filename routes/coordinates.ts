@@ -7,6 +7,7 @@ import {
     searchCoordinates
 } from '../controllers/coordinate.controller';
 import { validateJWT } from '../middlewares/jwt-validate';
+import { validateRole } from '../middlewares/role-validate';
 import { validateAll } from '../middlewares/validateAll';
 
 /* This is a router. It is a middleware that is used to handle HTTP requests. */
@@ -14,6 +15,8 @@ const router = Router();
 
 router.get('/', [
     validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador', 'Visitador']),
     validateAll
 ], searchCoordinates);
 
