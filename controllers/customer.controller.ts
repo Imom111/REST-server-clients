@@ -207,9 +207,9 @@ export const deleteCustomer = async( req: Request, res: Response) => {
                 msg: `The customer with id ${ id } does not exist in the database.`
             });
         }
-
+        
         await db.query(
-            'CALL update_customer(?, ?);', {
+            'CALL delete_customer(?, ?);', {
                 replacements: [ Number(id), Number(req.user.idUser) ]
             }
         );
