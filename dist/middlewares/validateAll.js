@@ -40,7 +40,6 @@ const existsUserByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     const user = yield User_model_1.default.findOne({ where: { email } });
     if (user) {
         const id = req.params.id || 0;
-        console.log({ id });
         if (user.dataValues.idUser != id) {
             return res.status(404).json({
                 msg: `The email ${email} is already registered`
