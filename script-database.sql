@@ -73,7 +73,7 @@ CREATE OR REPLACE VIEW customer_state AS
 	ON state.idState = municipality.idState_Municipality;
 
 CREATE OR REPLACE VIEW users AS
-	SELECT user.idUser, user.name AS name, user.email AS email, role.name AS role
+	SELECT user.idUser, user.name AS name, user.email AS email, user.status AS status, role.name AS role
 		FROM user
 		INNER JOIN role
 		ON user.idRole_User = role.idRole;

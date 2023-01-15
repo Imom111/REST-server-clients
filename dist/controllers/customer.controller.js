@@ -207,7 +207,7 @@ const deleteCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 msg: `The customer with id ${id} does not exist in the database.`
             });
         }
-        yield connection_1.default.query('CALL update_customer(?, ?);', {
+        yield connection_1.default.query('CALL delete_customer(?, ?);', {
             replacements: [Number(id), Number(req.user.idUser)]
         });
         res.json({
