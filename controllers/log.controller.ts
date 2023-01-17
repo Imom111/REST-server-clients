@@ -119,6 +119,29 @@ export const logsUsers = async( req: Request, res: Response) => {
     }
 }
 
+export const logsLogins = async( req: Request, res: Response) => {
+    try {
+        const log = await db.query(
+            `SELECT * FROM logLogin`,
+            {
+                type: QueryTypes.SELECT
+            }
+        );
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push(createDescriptionLog(log[index]));
+        }
+        res.json({
+            resutls: logFinal
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error getting user logs"
+        });
+    }
+}
+
 export const searchLogs = async( req: Request ,res: Response) => {
     const { query } = req.query;
     const logs = await db.query(

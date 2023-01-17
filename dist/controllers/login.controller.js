@@ -16,6 +16,7 @@ exports.logOut = exports.logIn = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_model_1 = __importDefault(require("../models/User.model"));
 const create_jwt_1 = require("../helpers/create-jwt");
+const connection_1 = __importDefault(require("../db/connection"));
 const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user, password } = req.body;
@@ -39,9 +40,13 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 ok: false
             });
         }
+        yield connection_1.default.query('CALL login(?);', {
+            replacements: [Number(userObj.idUser)]
+        });
         const token = yield (0, create_jwt_1.generarJWT)(userObj.dataValues.idUser);
         return res.json({
             token,
+            idRole: userObj.idRole_User,
             ok: true
         });
     }

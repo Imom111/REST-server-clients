@@ -13,6 +13,17 @@ export const createDescriptionLog = ( log: descriptionLog ) => {
         description += createDescriptionDelete(log.value);
     }
 
+    if ( !log.actionLog_description ) {
+        description += createDescriptionLogin(log.value);
+        return {
+            idLog: log.idLog,
+            description,
+            user_name: log.name,
+            date: log.date,
+            action: log.actionLog_description
+        }
+    }
+
     description += ` en la tabla ${ log.typeLog_description }`;
     
     return {
@@ -42,9 +53,19 @@ const createDescriptionUpdate = (values: string, table: string) => {
     description += addDescriptionForTableUpdate(arrayValues, table);
     return description;
 }
+
 const createDescriptionDelete = (values: string) => {
     let description = '';
     description += `Se eliminó de forma lógica el siguiente registro `;
+    const val = JSON.parse(values);
+    const arrayValues = Object.entries(val);
+    description += arrayValues[0][1];
+    return description;
+}
+
+const createDescriptionLogin = (values: string) => {
+    let description = '';
+    description += `Se ha iniciado sesión con el usuario `;
     const val = JSON.parse(values);
     const arrayValues = Object.entries(val);
     description += arrayValues[0][1];
