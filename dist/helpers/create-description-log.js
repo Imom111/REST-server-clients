@@ -12,6 +12,16 @@ const createDescriptionLog = (log) => {
     if (log.actionLog_description == 'ELiminación lógica') {
         description += createDescriptionDelete(log.value);
     }
+    if (!log.actionLog_description) {
+        description += createDescriptionLogin(log.value);
+        return {
+            idLog: log.idLog,
+            description,
+            user_name: log.name,
+            date: log.date,
+            action: log.actionLog_description
+        };
+    }
     description += ` en la tabla ${log.typeLog_description}`;
     return {
         idLog: log.idLog,
@@ -41,6 +51,14 @@ const createDescriptionUpdate = (values, table) => {
 const createDescriptionDelete = (values) => {
     let description = '';
     description += `Se eliminó de forma lógica el siguiente registro `;
+    const val = JSON.parse(values);
+    const arrayValues = Object.entries(val);
+    description += arrayValues[0][1];
+    return description;
+};
+const createDescriptionLogin = (values) => {
+    let description = '';
+    description += `Se ha iniciado sesión con el usuario `;
     const val = JSON.parse(values);
     const arrayValues = Object.entries(val);
     description += arrayValues[0][1];

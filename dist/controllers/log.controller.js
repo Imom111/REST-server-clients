@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchLogs = exports.logsUsers = exports.logsMunicipalities = exports.logsStates = exports.logsCustomer = exports.logsAll = void 0;
+exports.searchLogs = exports.logsLogins = exports.logsUsers = exports.logsMunicipalities = exports.logsStates = exports.logsCustomer = exports.logsAll = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const create_description_log_1 = require("../helpers/create-description-log");
@@ -121,6 +121,27 @@ const logsUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.logsUsers = logsUsers;
+const logsLogins = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const log = yield connection_1.default.query(`SELECT * FROM logLogin`, {
+            type: sequelize_1.QueryTypes.SELECT
+        });
+        let logFinal = [];
+        for (let index = 0; index < log.length; index++) {
+            logFinal.push((0, create_description_log_1.createDescriptionLog)(log[index]));
+        }
+        res.json({
+            resutls: logFinal
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error getting user logs"
+        });
+    }
+});
+exports.logsLogins = logsLogins;
 const searchLogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { query } = req.query;
     const logs = yield connection_1.default.query(`CALL searchLog ("${query}")`, {

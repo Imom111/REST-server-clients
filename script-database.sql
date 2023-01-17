@@ -82,9 +82,9 @@ CREATE TABLE log(
 	idLog INT PRIMARY KEY AUTO_INCREMENT,
     value VARCHAR(1023) NOT NULL,
 	date TIMESTAMP NOT NULL,
-    idTypeLog_Log INT NOT NULL,
+    idTypeLog_Log INT,
     FOREIGN KEY (idTypeLog_Log) REFERENCES typeLog(idTypeLog),
-    idTypeAction_Log INT NOT NULL,
+    idTypeAction_Log INT,
     FOREIGN KEY (idTypeAction_Log) REFERENCES actionLog(idActionLog),
 	idUser_Log INT NOT NULL,
     FOREIGN KEY (idUser_Log) REFERENCES user(idUser)
@@ -99,6 +99,14 @@ CREATE OR REPLACE VIEW logAll AS
 		ON log.idTypeLog_Log= typeLog.idTypeLog
 	INNER JOIN actionLog
 		ON log.idTypeAction_Log = actionLog.idActionLog
+    ORDER BY date DESC;
+
+CREATE OR REPLACE VIEW logLogin AS
+	SELECT log.idLog, log.value, date_format(cast(log.date AS date), '%d-%m-%Y') AS date, user.name
+	FROM log
+	INNER JOIN user
+		ON log.idUser_Log = user.idUser
+    WHERE (idTypeLog_Log IS NULL) AND (idTypeAction_Log IS NULL)
     ORDER BY date DESC;
 
 CREATE OR REPLACE VIEW logUser AS
@@ -438,6 +446,19 @@ END
 
 -- CALL update_user([Some idUser], '[Some user name]', '[Some user password]', '[Some user email]', [Some idRole], [some idUser]);
 CALL update_user(2, 'Ivan1235', '1234', 'ivan123@gmail.com', true, 1, 1);
+
+
+-- ***************************************** --
+-- **************** login ****************** --
+-- ***************************************** --
+
+DELIMITER //
+CREATE PROCEDURE login( IN var_id_user INT )
+BEGIN
+	SET @user_name = (SELECT name FROM user WHERE idUser = var_id_user);
+    INSERT INTO log ( value, date, idUser_Log ) VALUES(JSON_OBJECT('LOGIN', @user_name), NOW(), var_id_user);
+END
+// DELIMITER ;
 
 -- ***************************************** --
 -- ************** municipality ************* --
