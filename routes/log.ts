@@ -8,7 +8,8 @@ import {
     logsStates,
     logsMunicipalities,
     logsUsers,
-    searchLogs
+    searchLogs,
+    logsLogins
 } from '../controllers/log.controller';
 import { validateJWT } from '../middlewares/jwt-validate';
 import { validateRole } from '../middlewares/role-validate';
@@ -52,6 +53,13 @@ router.get('/usuarios', [
     validateRole(['Super administrador', 'Administrador']),
     validateAll
 ], logsUsers);
+
+router.get('/login', [
+    validateJWT,
+    validateAll,
+    validateRole(['Super administrador', 'Administrador']),
+    validateAll
+], logsLogins);
 
 router.get('/search', [
     validateJWT,

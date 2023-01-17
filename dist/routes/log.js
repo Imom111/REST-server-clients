@@ -39,6 +39,12 @@ router.get('/usuarios', [
     (0, role_validate_1.validateRole)(['Super administrador', 'Administrador']),
     validateAll_1.validateAll
 ], log_controller_1.logsUsers);
+router.get('/login', [
+    jwt_validate_1.validateJWT,
+    validateAll_1.validateAll,
+    (0, role_validate_1.validateRole)(['Super administrador', 'Administrador']),
+    validateAll_1.validateAll
+], log_controller_1.logsLogins);
 router.get('/search', [
     jwt_validate_1.validateJWT,
     validateAll_1.validateAll,

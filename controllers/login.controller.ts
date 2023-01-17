@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import bcryptjs from 'bcryptjs';
 import User from "../models/User.model";
 import { generarJWT } from "../helpers/create-jwt";
+import db from "../db/connection";
 
 export const logIn = async( req: Request, res: Response) => {
     try {
@@ -32,9 +33,16 @@ export const logIn = async( req: Request, res: Response) => {
             }); 
         }
         
+        await db.query(
+            'CALL login(?);', {
+                replacements: [Number(userObj.idUser)]
+            }
+        );
+
         const token = await generarJWT( userObj.dataValues.idUser );
         return res.json({
             token,
+            idRole: userObj.idRole_User,
             ok: true
         });
 
